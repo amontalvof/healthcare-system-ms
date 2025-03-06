@@ -1,0 +1,3 @@
+export enum QUEUE_CLIENT_NAMES {
+    AUTH_RMQ_CLIENT = 'AUTH_RMQ_CLIENT',
+}
