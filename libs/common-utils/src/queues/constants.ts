@@ -1,0 +1,13 @@
+export enum QUEUE_CLIENT_NAMES {
+    NOTIFICATION_RMQ_CLIENT = 'NOTIFICATION_RMQ_CLIENT',
+    AUTH_RMQ_CLIENT = 'AUTH_RMQ_CLIENT',
+    APPOINTMENT_RMQ_CLIENT = 'APPOINTMENT_RMQ_CLIENT',
+    PATIENT_RMQ_CLIENT = 'PATIENT_RMQ_CLIENT',
+}
+
+export enum QUEUE_NAMES {
+    NOTIFICATION_QUEUE = 'notification_queue',
+    AUTH_QUEUE = 'auth_queue',
+    APPOINTMENT_QUEUE = 'appointment_queue',
+    PATIENT_QUEUE = 'patient_queue',
+}

@@ -8,3 +8,14 @@ export interface IUser {
     createdAt: Date;
     updatedAt: Date;
 }
+
+export interface IRegisterUserDto {
+    email: string;
+    password: string;
+    fullName: string;
+}
+
+export interface ILoginUserDto {
+    email: string;
+    password: string;
+}

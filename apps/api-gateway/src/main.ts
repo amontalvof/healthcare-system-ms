@@ -1,10 +1,30 @@
 import { NestFactory } from '@nestjs/core';
 import { ApiGatewayModule } from './api-gateway.module';
+import { CommonUtilsService } from '@app/common-utils';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
+    const commonUtils = new CommonUtilsService();
     const app = await NestFactory.create(ApiGatewayModule);
-    const port = process.env.port;
-    await app.listen(port);
-    console.log('\x1b[36m%s\x1b[0m', `ApiGateway is running on port: ${port}`);
+
+    app.enableCors({
+        origin: process.env.CORS_ORIGIN,
+        methods: process.env.CORS_METHODS,
+        credentials: true,
+    });
+
+    app.useGlobalPipes(
+        new ValidationPipe({
+            whitelist: true, // remove non-whitelisted properties
+            forbidNonWhitelisted: true, // throw an error when non-whitelisted properties are present
+        }),
+    );
+
+    const PORT = process.env.PORT;
+    await app.listen(PORT);
+    commonUtils.colorLogger({
+        type: 'log',
+        message: `ApiGateway is running on port: ${PORT}`,
+    });
 }
 bootstrap();

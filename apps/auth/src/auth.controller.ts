@@ -1,26 +1,19 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { RegisterUserDto } from './dtos/register-user.dto';
-import { LoginUserDto } from './dtos/login.dto';
-import { JwtAuthGuard, User } from '@app/common-utils';
+import { MessagePattern } from '@nestjs/microservices';
+import { ILoginUserDto, IRegisterUserDto } from './types/user';
 
 @Controller()
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    @Post('register')
-    async register(@Body() createUserDto: RegisterUserDto) {
-        return this.authService.register(createUserDto);
+    @MessagePattern({ cmd: 'register.user' })
+    register(registerUserDto: IRegisterUserDto) {
+        return this.authService.register(registerUserDto);
     }
 
-    @Post('login')
-    async login(@Body() loginDto: LoginUserDto) {
-        return this.authService.login(loginDto);
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    getProfile(@User() user: { email: string; userId: string }) {
-        return this.authService.getProfile(user.userId);
+    @MessagePattern({ cmd: 'login.user' })
+    login(loginUserDto: ILoginUserDto) {
+        return this.authService.login(loginUserDto);
     }
 }

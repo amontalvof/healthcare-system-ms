@@ -2,7 +2,6 @@ import {
     ConflictException,
     Inject,
     Injectable,
-    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -10,10 +9,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { QUEUE_CLIENT_NAMES } from './config/constants';
-import { RegisterUserDto } from './dtos/register-user.dto';
-import { LoginUserDto } from './dtos/login.dto';
 import { User } from './schemas/user.schema';
+import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
+import { ILoginUserDto, IRegisterUserDto } from './types/user';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +23,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async register(createUserDto: RegisterUserDto): Promise<User> {
+    async register(createUserDto: IRegisterUserDto): Promise<User> {
         const { fullName, email, password = '' } = createUserDto;
         // Check if user already exists
         const existingUser = await this.userModel.findOne({ email });
@@ -42,12 +40,12 @@ export class AuthService {
         // TODO: Send real verification code to user
         this.notificationClient.emit('send.verification.code', {
             code: 'abc1234',
-            email: '',
+            email,
         });
         return user.save();
     }
 
-    async login(loginDto: LoginUserDto) {
+    async login(loginDto: ILoginUserDto) {
         const user = await this.validateUser(loginDto.email, loginDto.password);
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
@@ -64,17 +62,5 @@ export class AuthService {
             return user;
         }
         return null;
-    }
-
-    async getProfile(userId: string) {
-        const user = await this.userModel.findById(userId);
-        if (user) {
-            return {
-                email: user.email,
-                userId: user._id,
-                fullName: user.fullName,
-            };
-        }
-        throw new NotFoundException('User not found');
     }
 }
