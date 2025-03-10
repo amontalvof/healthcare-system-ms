@@ -2,11 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { AppointmentController } from './appointment.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { QUEUE_CLIENT_NAMES, QUEUE_NAMES } from '@app/common-utils';
+import {
+    JwtStrategy,
+    QUEUE_CLIENT_NAMES,
+    QUEUE_NAMES,
+} from '@app/common-utils';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from '../../strategies/jwt.strategy';
 
 @Module({
     imports: [

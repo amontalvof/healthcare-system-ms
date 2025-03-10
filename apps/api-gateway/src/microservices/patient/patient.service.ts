@@ -1,10 +1,9 @@
-import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
+import { IJwtUser, QUEUE_CLIENT_NAMES } from '@app/common-utils';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreatePatientDto } from './dtos/create-patient.dto';
 import { lastValueFrom } from 'rxjs';
 import { UpdatePatientDto } from './dtos/update-patient.dto';
-import { IUserDecorator } from '../../types/user';
 
 @Injectable()
 export class PatientService {
@@ -13,7 +12,7 @@ export class PatientService {
         private readonly patientClient: ClientProxy,
     ) {}
 
-    create(user: IUserDecorator, createPatientDto: CreatePatientDto) {
+    create(user: IJwtUser, createPatientDto: CreatePatientDto) {
         return lastValueFrom(
             this.patientClient.send(
                 { cmd: 'create.patient' },

@@ -11,7 +11,7 @@ import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { User } from './schemas/user.schema';
 import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
-import { ILoginUserDto, IRegisterUserDto } from './types/user';
+import { ILoginUserDto, IRegisterUserDto, IUserResponse } from './types/user';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +23,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) {}
 
-    async register(createUserDto: IRegisterUserDto): Promise<User> {
+    async register(createUserDto: IRegisterUserDto): Promise<IUserResponse> {
         const { fullName, email, password = '' } = createUserDto;
         // Check if user already exists
         const existingUser = await this.userModel.findOne({ email });
@@ -42,7 +42,9 @@ export class AuthService {
             code: 'abc1234',
             email,
         });
-        return user.save();
+        const savedUser = await user.save();
+        const { password: _, ...userWithoutPassword } = savedUser.toObject();
+        return userWithoutPassword as IUserResponse;
     }
 
     async login(loginDto: ILoginUserDto) {
@@ -50,7 +52,7 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
         }
-        const payload = { sub: user._id, email: user.email };
+        const payload = { sub: user._id, email: user.email, roles: user.roles };
         return {
             access_token: this.jwtService.sign(payload),
         };

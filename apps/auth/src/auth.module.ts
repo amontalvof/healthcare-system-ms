@@ -7,9 +7,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { QUEUE_CLIENT_NAMES, QUEUE_NAMES } from '@app/common-utils';
+import {
+    JwtStrategy,
+    QUEUE_CLIENT_NAMES,
+    QUEUE_NAMES,
+} from '@app/common-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
     imports: [

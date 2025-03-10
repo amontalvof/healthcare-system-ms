@@ -1,8 +1,8 @@
 import { Controller } from '@nestjs/common';
 import { PatientService } from './patient.service';
-import { IUserDecorator } from './types/user';
 import { MessagePattern } from '@nestjs/microservices';
 import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
+import { IJwtUser } from '@app/common-utils';
 
 @Controller()
 export class PatientController {
@@ -13,7 +13,7 @@ export class PatientController {
         user,
         createPatientDto,
     }: {
-        user: IUserDecorator;
+        user: IJwtUser;
         createPatientDto: ICreatePatientDto;
     }) {
         return this.patientService.create(user, createPatientDto);

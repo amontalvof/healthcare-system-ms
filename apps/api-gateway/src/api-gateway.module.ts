@@ -7,7 +7,9 @@ import { PatientModule } from './microservices/patient/patient.module';
 import { AppointmentModule } from './microservices/appointment/appointment.module';
 import { envValidationSchema } from './config/joi.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { APP_GUARD } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { createKeyv } from '@keyv/redis';
 
 @Module({
     imports: [
@@ -27,6 +29,14 @@ import { APP_GUARD } from '@nestjs/core';
                 },
             ],
         }),
+        CacheModule.registerAsync({
+            useFactory: async () => {
+                return {
+                    stores: [createKeyv(process.env.REDIS_URL)],
+                    ttl: 60000,
+                };
+            },
+        }),
         AuthModule,
         PatientModule,
         AppointmentModule,
@@ -37,6 +47,10 @@ import { APP_GUARD } from '@nestjs/core';
         {
             provide: APP_GUARD,
             useClass: ThrottlerGuard,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: CacheInterceptor,
         },
     ],
 })

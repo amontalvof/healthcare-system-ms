@@ -7,4 +7,5 @@ export const envValidationSchema = Joi.object({
     JWT_EXPIRATION: Joi.string().required(),
     CORS_ORIGIN: Joi.string().required(),
     CORS_METHODS: Joi.string().required(),
+    REDIS_URL: Joi.string().required(),
 });

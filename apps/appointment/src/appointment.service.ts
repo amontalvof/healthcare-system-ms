@@ -59,11 +59,11 @@ export class AppointmentService {
         return this.prisma.appointment.update({
             where: { id },
             data: {
-                patientId: updateAppointmentDto.patientId,
                 date: updateAppointmentDto.date
                     ? new Date(updateAppointmentDto.date)
                     : undefined,
                 reason: updateAppointmentDto.reason,
+                cancelledReason: updateAppointmentDto.cancelledReason,
                 status: updateAppointmentDto.status,
             },
         });

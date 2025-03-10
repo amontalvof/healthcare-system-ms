@@ -19,3 +19,13 @@ export interface ILoginUserDto {
     email: string;
     password: string;
 }
+
+export interface IUserResponse {
+    _id: string;
+    fullName: string;
+    email: string;
+    isActive: boolean;
+    roles: string[];
+    createdAt: Date;
+    updatedAt: Date;
+}

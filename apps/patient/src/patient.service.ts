@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../libs/common-utils/src/db/prisma.service';
-import { IUserDecorator } from './types/user';
 import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
+import { IJwtUser, PrismaService } from '@app/common-utils';
 
 @Injectable()
 export class PatientService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async create(user: IUserDecorator, createPatientDto: ICreatePatientDto) {
+    async create(user: IJwtUser, createPatientDto: ICreatePatientDto) {
         const { userId } = user;
         return this.prisma.patient.create({
             data: { ...createPatientDto, userId },

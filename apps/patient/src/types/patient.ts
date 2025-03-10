@@ -4,9 +4,11 @@ export interface ICreatePatientDto {
     countryCode: string;
     phone: string;
     address: string;
-    emergencyContactName: string;
-    emergencyContactCountryCode: string;
-    emergencyContactPhone: string;
+    emergencyContact: {
+        fullName: string;
+        countryCode: string;
+        phone: string;
+    };
 }
 
 export interface IUpdatePatientDto extends Partial<ICreatePatientDto> {}

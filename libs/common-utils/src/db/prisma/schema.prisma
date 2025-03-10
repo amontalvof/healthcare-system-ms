@@ -21,9 +21,7 @@ model Patient {
   countryCode    String
   phone     String
   address    String
-  emergencyContactName    String
-  emergencyContactCountryCode     String
-  emergencyContactPhone     String
+  emergencyContact Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   appointments Appointment[]
