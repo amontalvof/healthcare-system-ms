@@ -43,19 +43,20 @@ model Doctor {
 }
 
 model Appointment {
-  id          Int      @id @default(autoincrement())
-  patientId   Int
+  id              Int      @id @default(autoincrement())
+  patientId       Int
   doctorId        Int
-  date        DateTime
-  reason String?
+  date            DateTime
+  reason          String?
   cancelledReason String?
-  status      AppointmentStatus
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  patient     Patient  @relation(fields: [patientId], references: [id])
+  status          AppointmentStatus
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  patient         Patient  @relation(fields: [patientId], references: [id])
   doctor          Doctor   @relation(fields: [doctorId], references: [id])
   @@index([patientId])
   @@index([doctorId])
+  @@unique([patientId, doctorId, date])
 }
 
 enum AppointmentStatus {

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PrismaService, QUEUE_CLIENT_NAMES } from '@app/common-utils';
-import { ClientProxy } from '@nestjs/microservices';
+import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
     ICreateAppointmentDto,
     IUpdateAppointmentDto,
@@ -15,21 +15,27 @@ export class AppointmentService {
     ) {}
 
     async create(createAppointmentDto: ICreateAppointmentDto) {
-        const result = await this.prisma.appointment.create({
-            data: {
-                patient: { connect: { id: createAppointmentDto.patientId } },
-                doctor: { connect: { id: createAppointmentDto.doctorId } },
-                date: new Date(createAppointmentDto.date),
-                reason: createAppointmentDto.reason,
-                status: createAppointmentDto.status,
-            },
-        });
-        // TODO: Send real appointment scheduled to user
-        this.notificationClient.emit('send.appointment.scheduled', {
-            code: 'abc1234',
-            email: '',
-        });
-        return result;
+        try {
+            const result = await this.prisma.appointment.create({
+                data: {
+                    patient: {
+                        connect: { id: createAppointmentDto.patientId },
+                    },
+                    doctor: { connect: { id: createAppointmentDto.doctorId } },
+                    date: new Date(createAppointmentDto.date),
+                    reason: createAppointmentDto.reason,
+                    status: createAppointmentDto.status,
+                },
+            });
+            // TODO: Send real appointment scheduled to user
+            this.notificationClient.emit('send.appointment.scheduled', {
+                code: 'abc1234',
+                email: '',
+            });
+            return result;
+        } catch (error) {
+            this.handlePrismaError(error);
+        }
     }
 
     async findAll(page = 1, limit = 10) {
@@ -71,5 +77,16 @@ export class AppointmentService {
 
     async remove(id: number) {
         return this.prisma.appointment.delete({ where: { id } });
+    }
+
+    private handlePrismaError(error: any): never {
+        if (error.code === 'P2002') {
+            const target = error.meta?.target;
+            throw new RpcException({
+                statusCode: 409,
+                message: `An appointment already exists for the combination of fields: ${target ? target.join(', ') : 'unknown'}.`,
+            });
+        }
+        throw new RpcException(error);
     }
 }
