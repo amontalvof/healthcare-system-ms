@@ -34,7 +34,7 @@ export class AppointmentService {
             });
             return result;
         } catch (error) {
-            this.handlePrismaError(error);
+            this.prisma.handlePrismaError(error);
         }
     }
 
@@ -77,16 +77,5 @@ export class AppointmentService {
 
     async remove(id: number) {
         return this.prisma.appointment.delete({ where: { id } });
-    }
-
-    private handlePrismaError(error: any): never {
-        if (error.code === 'P2002') {
-            const target = error.meta?.target;
-            throw new RpcException({
-                statusCode: 409,
-                message: `An appointment already exists for the combination of fields: ${target ? target.join(', ') : 'unknown'}.`,
-            });
-        }
-        throw new RpcException(error);
     }
 }

@@ -1,16 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
 import { IJwtUser, PrismaService } from '@app/common-utils';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class PatientService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(user: IJwtUser, createPatientDto: ICreatePatientDto) {
-        const { userId } = user;
-        return this.prisma.patient.create({
-            data: { ...createPatientDto, userId },
-        });
+        try {
+            const { userId } = user;
+            const result = await this.prisma.patient.create({
+                data: { ...createPatientDto, userId },
+            });
+            return result;
+        } catch (error) {
+            this.prisma.handlePrismaError(error);
+        }
     }
 
     async findAll() {
