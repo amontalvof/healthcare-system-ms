@@ -1,24 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
     IsEmail,
-    IsObject,
-    IsOptional,
-    IsPhoneNumber,
+    IsEnum,
     IsString,
     Matches,
     MaxLength,
     MinLength,
 } from 'class-validator';
 
-export class RegisterPhoneNumberDto {
-    @ApiProperty({ description: 'Country code of the user' })
-    @IsString()
-    countryCode: string;
-
-    @ApiProperty({ description: 'Phone number of the user' })
-    @IsString()
-    @IsPhoneNumber()
-    phone: string;
+export enum UserRole {
+    ADMIN = 'admin',
+    PATIENT = 'patient',
+    DOCTOR = 'doctor',
 }
 
 export class RegisterUserDto {
@@ -26,11 +19,6 @@ export class RegisterUserDto {
     @IsString()
     @IsEmail()
     email: string;
-
-    @ApiProperty({ description: 'Phone number of the user' })
-    @IsObject()
-    @IsOptional()
-    phoneNumber: RegisterPhoneNumberDto;
 
     @ApiProperty({ description: 'Full name of the user' })
     @IsString()
@@ -46,4 +34,8 @@ export class RegisterUserDto {
             'The password must have a Uppercase, lowercase letter and a number',
     })
     password: string;
+
+    @ApiProperty({ description: 'User role' })
+    @IsEnum(UserRole)
+    role: string;
 }

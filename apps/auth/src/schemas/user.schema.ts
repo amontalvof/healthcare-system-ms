@@ -1,9 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { IUser } from '../types/user';
+import { IUser, UserRole } from '../types/user';
 
-@Schema()
+@Schema({
+    toJSON: {
+        transform: function (_doc, ret) {
+            delete ret.password;
+            delete ret.verificationCode;
+            delete ret.verificationCodeExpires;
+            delete ret.__v;
+            return ret;
+        },
+    },
+})
 export class User extends Document implements IUser {
     @Prop({
         default: () => uuidv4(),
@@ -23,7 +33,13 @@ export class User extends Document implements IUser {
     isActive: boolean;
 
     @Prop({ default: ['patient'] })
-    roles: string[];
+    roles: UserRole[];
+
+    @Prop()
+    verificationCode: string | null;
+
+    @Prop()
+    verificationCodeExpires: Date | null;
 
     @Prop({ default: () => Date.now() })
     createdAt: Date;

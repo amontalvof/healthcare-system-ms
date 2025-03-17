@@ -25,7 +25,7 @@ import { createKeyv } from '@keyv/redis';
             throttlers: [
                 {
                     ttl: 60000, // Time to live in milliseconds
-                    limit: 5, // Maximum number of requests within ttl milliseconds
+                    limit: 50, // Maximum number of requests within ttl milliseconds
                 },
             ],
         }),

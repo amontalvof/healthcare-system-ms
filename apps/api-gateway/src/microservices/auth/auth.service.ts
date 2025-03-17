@@ -1,9 +1,12 @@
 import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, timeout } from 'rxjs';
 import { LoginUserDto } from './dtos/login.dto';
 import { RegisterUserDto } from './dtos/register-user.dto';
+import { VerifyDto } from './dtos/verify.dto';
+import { ResendVerificationDto } from './dtos/resend-verification.dto';
+import { exceptionHandler } from '../../errors/exceptions';
 
 @Injectable()
 export class AuthService {
@@ -12,15 +15,34 @@ export class AuthService {
         private readonly authClient: ClientProxy,
     ) {}
 
-    register(registerUserDto: RegisterUserDto) {
-        return lastValueFrom(
+    async register(registerUserDto: RegisterUserDto) {
+        const result = await lastValueFrom(
             this.authClient.send({ cmd: 'register.user' }, registerUserDto),
         );
+        return exceptionHandler(result);
     }
 
-    login(loginUserDto: LoginUserDto) {
-        return lastValueFrom(
+    async login(loginUserDto: LoginUserDto) {
+        const result = await lastValueFrom(
             this.authClient.send({ cmd: 'login.user' }, loginUserDto),
         );
+        return exceptionHandler(result);
+    }
+
+    async verifyUser(verifyDto: VerifyDto) {
+        const result = await lastValueFrom(
+            this.authClient.send({ cmd: 'verify.code' }, verifyDto),
+        );
+        return exceptionHandler(result);
+    }
+
+    async resendVerification(resendVerificationDto: ResendVerificationDto) {
+        const result = await lastValueFrom(
+            this.authClient.send(
+                { cmd: 'resend.verification.code' },
+                resendVerificationDto,
+            ),
+        );
+        return exceptionHandler(result);
     }
 }
