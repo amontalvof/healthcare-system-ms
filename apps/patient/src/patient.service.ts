@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
 import { IJwtUser, PrismaService } from '@app/common-utils';
-import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class PatientService {

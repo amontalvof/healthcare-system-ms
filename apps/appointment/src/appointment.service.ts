@@ -5,7 +5,7 @@ import {
     QUEUE_CLIENT_NAMES,
     Role,
 } from '@app/common-utils';
-import { ClientProxy, RpcException } from '@nestjs/microservices';
+import { ClientProxy } from '@nestjs/microservices';
 import {
     ICreateAppointmentDto,
     IUpdateAppointmentDto,
@@ -76,21 +76,6 @@ export class AppointmentService {
             data: appointments,
             totalPages: Math.ceil(total / limit),
         };
-        // const [appointments, total] = await Promise.all([
-        //     this.prisma.appointment.findMany({
-        //         skip,
-        //         take: limit,
-        //         orderBy: { date: 'desc' },
-        //     }),
-        //     this.prisma.appointment.count(),
-        // ]);
-        // return {
-        //     total,
-        //     page,
-        //     limit,
-        //     data: appointments,
-        //     totalPages: Math.ceil(total / limit),
-        // };
     }
 
     async findOne(id: number) {

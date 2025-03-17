@@ -19,7 +19,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
             const target = error.meta?.target;
             throw new RpcException({
                 statusCode: 409,
-                message: `A patient already exists for the combination of fields: ${target ? target.join(', ') : 'unknown'}.`,
+                message: `A record already exists for the combination of fields: ${target ? target.join(', ') : 'unknown'}.`,
             });
         }
         throw new RpcException(error);
