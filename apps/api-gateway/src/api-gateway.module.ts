@@ -8,8 +8,9 @@ import { AppointmentModule } from './microservices/appointment/appointment.modul
 import { envValidationSchema } from './config/joi.validation';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
-import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
+import { UserCacheInterceptor } from './interceptors/user-cache.interceptor';
 
 @Module({
     imports: [
@@ -50,7 +51,7 @@ import { createKeyv } from '@keyv/redis';
         },
         {
             provide: APP_INTERCEPTOR,
-            useClass: CacheInterceptor,
+            useClass: UserCacheInterceptor,
         },
     ],
 })

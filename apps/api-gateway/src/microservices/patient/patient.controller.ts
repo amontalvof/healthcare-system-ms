@@ -4,6 +4,7 @@ import {
     Delete,
     Get,
     Param,
+    ParseIntPipe,
     Post,
     Put,
     UseGuards,
@@ -57,8 +58,8 @@ export class PatientController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
     @Get('read/:id')
-    async findOne(@Param('id') id: string) {
-        return this.patientService.findOne(Number(id));
+    async findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.patientService.findOne(id);
     }
 
     @ApiOkResponse({
@@ -69,10 +70,10 @@ export class PatientController {
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
     @Put('update/:id')
     async update(
-        @Param('id') id: string,
+        @Param('id', ParseIntPipe) id: number,
         @Body() updatePatientDto: UpdatePatientDto,
     ) {
-        return this.patientService.update(Number(id), updatePatientDto);
+        return this.patientService.update(id, updatePatientDto);
     }
 
     @ApiOkResponse({
@@ -82,7 +83,7 @@ export class PatientController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
     @Delete(':id')
-    async remove(@Param('id') id: string) {
-        return this.patientService.remove(Number(id));
+    async remove(@Param('id', ParseIntPipe) id: number) {
+        return this.patientService.remove(id);
     }
 }

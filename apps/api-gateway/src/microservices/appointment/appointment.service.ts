@@ -1,4 +1,4 @@
-import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
+import { IJwtUser, QUEUE_CLIENT_NAMES } from '@app/common-utils';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
@@ -19,10 +19,10 @@ export class AppointmentService {
         );
     }
 
-    findAll(page: number, limit: number) {
+    findAll(user: IJwtUser, page: number, limit: number) {
         return this.appointmentClient.send(
             { cmd: 'read.appointments' },
-            { page, limit },
+            { page, limit, user },
         );
     }
 

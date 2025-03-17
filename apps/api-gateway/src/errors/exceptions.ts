@@ -1,6 +1,7 @@
 import {
     BadRequestException,
     ConflictException,
+    NotFoundException,
     UnauthorizedException,
 } from '@nestjs/common';
 
@@ -8,6 +9,7 @@ export const exceptionsMap = {
     BadRequestException,
     ConflictException,
     UnauthorizedException,
+    NotFoundException,
 };
 
 export const exceptionHandler = (params: {

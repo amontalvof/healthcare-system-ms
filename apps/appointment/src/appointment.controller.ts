@@ -5,6 +5,7 @@ import {
     ICreateAppointmentDto,
     IUpdateAppointmentDto,
 } from './types/appointment';
+import { IJwtUser } from '@app/common-utils';
 
 @Controller()
 export class AppointmentController {
@@ -16,8 +17,16 @@ export class AppointmentController {
     }
 
     @MessagePattern({ cmd: 'read.appointments' })
-    async findAll({ page, limit }: { page: number; limit: number }) {
-        return this.appointmentService.findAll(page, limit);
+    async findAll({
+        user,
+        page,
+        limit,
+    }: {
+        user: IJwtUser;
+        page: number;
+        limit: number;
+    }) {
+        return this.appointmentService.findAll(user, page, limit);
     }
 
     @MessagePattern({ cmd: 'read.appointment' })

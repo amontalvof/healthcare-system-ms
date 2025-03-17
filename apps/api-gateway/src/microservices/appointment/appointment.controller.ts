@@ -4,6 +4,7 @@ import {
     Delete,
     Get,
     Param,
+    ParseIntPipe,
     Post,
     Put,
     Query,
@@ -15,7 +16,7 @@ import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { UpdateAppointmentDto } from './dtos/update-appointment.dto';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { Role } from '@app/common-utils';
+import { IJwtUser, Role } from '@app/common-utils';
 import {
     ApiBearerAuth,
     ApiOkResponse,
@@ -24,6 +25,7 @@ import {
 } from '@nestjs/swagger';
 import { AppointmentResponseDto } from './response/appointment-response.dto';
 import { PaginatedAppointmentsDto } from './response/paginated-appointments.dto';
+import { User } from '../../decorators/user.decorator';
 
 @ApiTags('appointment')
 @ApiBearerAuth()
@@ -59,12 +61,16 @@ export class AppointmentController {
         description: 'Number of records per page',
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(Role.Admin, Role.Doctor, Role.Patient)
     @Get('read')
-    async findAll(@Query('page') page = '1', @Query('limit') limit = '10') {
+    async findAll(
+        @User() user: IJwtUser,
+        @Query('page') page = '1',
+        @Query('limit') limit = '10',
+    ) {
         const pageNumber = parseInt(page, 10);
         const limitNumber = parseInt(limit, 10);
-        return this.appointmentService.findAll(pageNumber, limitNumber);
+        return this.appointmentService.findAll(user, pageNumber, limitNumber);
     }
 
     @ApiOkResponse({
@@ -74,8 +80,8 @@ export class AppointmentController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
     @Get('read/:id')
-    async findOne(@Param('id') id: string) {
-        return this.appointmentService.findOne(Number(id));
+    async findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.appointmentService.findOne(id);
     }
 
     @ApiOkResponse({
@@ -86,10 +92,10 @@ export class AppointmentController {
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
     @Put('update/:id')
     async update(
-        @Param('id') id: string,
+        @Param('id', ParseIntPipe) id: number,
         @Body() updateAppointmentDto: UpdateAppointmentDto,
     ) {
-        return this.appointmentService.update(Number(id), updateAppointmentDto);
+        return this.appointmentService.update(id, updateAppointmentDto);
     }
 
     @ApiOkResponse({
@@ -99,7 +105,7 @@ export class AppointmentController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
     @Delete('delete/:id')
-    async remove(@Param('id') id: string) {
-        return this.appointmentService.remove(Number(id));
+    async remove(@Param('id', ParseIntPipe) id: number) {
+        return this.appointmentService.remove(id);
     }
 }

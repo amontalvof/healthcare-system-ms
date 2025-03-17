@@ -1,5 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService, QUEUE_CLIENT_NAMES } from '@app/common-utils';
+import {
+    IJwtUser,
+    PrismaService,
+    QUEUE_CLIENT_NAMES,
+    Role,
+} from '@app/common-utils';
 import { ClientProxy, RpcException } from '@nestjs/microservices';
 import {
     ICreateAppointmentDto,
@@ -38,16 +43,32 @@ export class AppointmentService {
         }
     }
 
-    async findAll(page = 1, limit = 10) {
+    async findAll(user: IJwtUser, page = 1, limit = 10) {
         const skip = (page - 1) * limit;
-        const [appointments, total] = await Promise.all([
+        // Build the where clause based on the user role using nested filters.
+        // Prisma will join the related table automatically.
+        let whereClause = {};
+
+        if (user.roles.includes(Role.Patient)) {
+            whereClause = { patient: { userId: user.userId } };
+        } else if (user.roles.includes(Role.Doctor)) {
+            whereClause = { doctor: { userId: user.userId } };
+        }
+        // For admin, whereClause remains {} so no filtering is applied.
+        // Using $transaction ensures both queries run in a single DB round trip if possible.
+        const [appointments, total] = await this.prisma.$transaction([
             this.prisma.appointment.findMany({
                 skip,
+                where: whereClause,
                 take: limit,
                 orderBy: { date: 'desc' },
+                include: { patient: true, doctor: true },
             }),
-            this.prisma.appointment.count(),
+            this.prisma.appointment.count({
+                where: whereClause,
+            }),
         ]);
+
         return {
             total,
             page,
@@ -55,6 +76,21 @@ export class AppointmentService {
             data: appointments,
             totalPages: Math.ceil(total / limit),
         };
+        // const [appointments, total] = await Promise.all([
+        //     this.prisma.appointment.findMany({
+        //         skip,
+        //         take: limit,
+        //         orderBy: { date: 'desc' },
+        //     }),
+        //     this.prisma.appointment.count(),
+        // ]);
+        // return {
+        //     total,
+        //     page,
+        //     limit,
+        //     data: appointments,
+        //     totalPages: Math.ceil(total / limit),
+        // };
     }
 
     async findOne(id: number) {
