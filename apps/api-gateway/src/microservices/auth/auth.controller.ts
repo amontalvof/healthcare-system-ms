@@ -44,7 +44,7 @@ export class AuthController {
         description: 'Verification code resent successfully',
         type: VerifyResponseDto,
     })
-    @Post('resend-verification')
+    @Post('resend')
     async resendVerification(
         @Body() resendVerificationDto: ResendVerificationDto,
     ) {
