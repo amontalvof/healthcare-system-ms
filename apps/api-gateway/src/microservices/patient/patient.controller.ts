@@ -32,7 +32,7 @@ export class PatientController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient)
-    @Post('create')
+    @Post()
     async create(
         @User() user: IJwtUser,
         @Body() createPatientDto: CreatePatientDto,
@@ -46,7 +46,7 @@ export class PatientController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
-    @Get('read')
+    @Get()
     async findAll() {
         return this.patientService.findAll();
     }
@@ -57,7 +57,7 @@ export class PatientController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
-    @Get('read/:id')
+    @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.patientService.findOne(id);
     }
@@ -68,7 +68,7 @@ export class PatientController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
-    @Put('update/:id')
+    @Put(':id')
     async update(
         @Param('id', ParseIntPipe) id: number,
         @Body() updatePatientDto: UpdatePatientDto,

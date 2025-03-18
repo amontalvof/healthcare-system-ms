@@ -7,9 +7,8 @@ export class NotificationController {
     constructor(private readonly notificationService: NotificationService) {}
 
     @EventPattern('send.verification.code')
-    handleVerificationCodeEvent(data: any) {
-        console.log('send.verification.code', data);
-        return this.notificationService.handleTestEvent(data);
+    handleVerificationCodeEvent(data: { email: string; code: string }) {
+        return this.notificationService.sendVerificationCode(data);
     }
 
     @EventPattern('send.appointment.scheduled')

@@ -39,7 +39,7 @@ export class AppointmentController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
-    @Post('create')
+    @Post()
     async create(@Body() createAppointmentDto: CreateAppointmentDto) {
         return this.appointmentService.create(createAppointmentDto);
     }
@@ -62,7 +62,7 @@ export class AppointmentController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Doctor, Role.Patient)
-    @Get('read')
+    @Get()
     async findAll(
         @User() user: IJwtUser,
         @Query('page') page = '1',
@@ -79,7 +79,7 @@ export class AppointmentController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
-    @Get('read/:id')
+    @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.appointmentService.findOne(id);
     }
@@ -90,7 +90,7 @@ export class AppointmentController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin, Role.Patient, Role.Doctor)
-    @Put('update/:id')
+    @Put(':id')
     async update(
         @Param('id', ParseIntPipe) id: number,
         @Body() updateAppointmentDto: UpdateAppointmentDto,
@@ -104,7 +104,7 @@ export class AppointmentController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(Role.Admin)
-    @Delete('delete/:id')
+    @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return this.appointmentService.remove(id);
     }
