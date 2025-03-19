@@ -31,11 +31,20 @@ export class AppointmentService {
                     reason: createAppointmentDto.reason,
                     status: createAppointmentDto.status,
                 },
+                include: {
+                    patient: true,
+                    doctor: true,
+                },
             });
-            // TODO: Send real appointment scheduled to user
             this.notificationClient.emit('send.appointment.scheduled', {
-                code: 'abc1234',
-                email: '',
+                email: result.patient.email,
+                name: result.patient.fullName,
+                date: result.date,
+                doctor: result.doctor.fullName,
+                clinic: result.doctor.clinic,
+                address: result.doctor.clinicAddress,
+                countryCode: result.doctor.countryCode,
+                phone: result.doctor.phone,
             });
             return result;
         } catch (error) {
