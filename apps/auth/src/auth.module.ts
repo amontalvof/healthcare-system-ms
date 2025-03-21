@@ -4,15 +4,18 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthService } from './auth.service';
 import { envValidationSchema } from './config/joi.validation';
 import { MongooseModule } from '@nestjs/mongoose';
-import { User, UserSchema } from './schemas/user.schema';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import {
-    JwtStrategy,
+    User,
+    UserSchema,
+} from '@app/common-utils/db/mongo/schemas/user.schema';
+import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
+import {
     QUEUE_CLIENT_NAMES,
     QUEUE_NAMES,
-} from '@app/common-utils';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+} from '@app/common-utils/queues/constants';
 
 @Module({
     imports: [

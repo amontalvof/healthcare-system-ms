@@ -1,10 +1,10 @@
 export interface IJwtUser {
     email: string;
     userId: string;
-    roles: Role[];
+    roles: ERole[];
 }
 
-export enum Role {
+export enum ERole {
     Doctor = 'doctor',
     Patient = 'patient',
     Admin = 'admin',

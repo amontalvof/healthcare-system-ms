@@ -1,9 +1,10 @@
-import { IJwtUser, QUEUE_CLIENT_NAMES } from '@app/common-utils';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { lastValueFrom } from 'rxjs';
 import { UpdateAppointmentDto } from './dtos/update-appointment.dto';
+import { IJwtUser } from '@app/common-utils/jwt/user';
+import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
 
 @Injectable()
 export class AppointmentService {

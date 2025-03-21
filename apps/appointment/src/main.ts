@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { AppointmentModule } from './appointment.module';
-import { CommonUtilsService, QUEUE_NAMES } from '@app/common-utils';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { AppointmentModule } from './appointment.module';
+import { CommonUtilsService } from '@app/common-utils';
+import { QUEUE_NAMES } from '@app/common-utils/queues/constants';
 
 async function bootstrap() {
     const commonUtils = new CommonUtilsService();

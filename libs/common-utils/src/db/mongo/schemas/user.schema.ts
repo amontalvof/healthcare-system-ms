@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
-import { IUser, UserRole } from '../types/user';
+import { EUserRole, IUser } from '../types/user';
 
 @Schema({
     toJSON: {
@@ -33,7 +33,7 @@ export class User extends Document implements IUser {
     isActive: boolean;
 
     @Prop({ default: ['patient'] })
-    roles: UserRole[];
+    roles: EUserRole[];
 
     @Prop()
     verificationCode: string | null;

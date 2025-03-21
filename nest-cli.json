@@ -46,6 +46,15 @@
         "tsConfigPath": "apps/billing/tsconfig.app.json"
       }
     },
+    "chatbot": {
+      "type": "application",
+      "root": "apps/chatbot",
+      "entryFile": "main",
+      "sourceRoot": "apps/chatbot/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/chatbot/tsconfig.app.json"
+      }
+    },
     "common-utils": {
       "type": "library",
       "root": "libs/common-utils",

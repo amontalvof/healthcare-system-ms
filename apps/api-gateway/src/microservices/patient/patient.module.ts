@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { PatientController } from './patient.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-    JwtStrategy,
-    QUEUE_CLIENT_NAMES,
-    QUEUE_NAMES,
-} from '@app/common-utils';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
+import {
+    QUEUE_CLIENT_NAMES,
+    QUEUE_NAMES,
+} from '@app/common-utils/queues/constants';
 
 @Module({
     imports: [

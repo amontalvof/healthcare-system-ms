@@ -3,7 +3,10 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { QUEUE_CLIENT_NAMES, QUEUE_NAMES } from '@app/common-utils';
+import {
+    QUEUE_CLIENT_NAMES,
+    QUEUE_NAMES,
+} from '@app/common-utils/queues/constants';
 @Module({
     imports: [
         ClientsModule.registerAsync([

@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
-import { NotificationModule } from './notification.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { CommonUtilsService, QUEUE_NAMES } from '@app/common-utils';
+import { NotificationModule } from './notification.module';
+import { CommonUtilsService } from '@app/common-utils';
+import { QUEUE_NAMES } from '@app/common-utils/queues/constants';
 
 async function bootstrap() {
     const commonUtils = new CommonUtilsService();

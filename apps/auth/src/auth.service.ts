@@ -4,8 +4,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { User } from './schemas/user.schema';
-import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
 import {
     ILoginUserDto,
     IRegisterUserDto,
@@ -14,6 +12,8 @@ import {
 } from './types/user';
 import { randomInt } from 'crypto';
 import dayjs from 'dayjs';
+import { User } from '@app/common-utils/db/mongo/schemas/user.schema';
+import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
 
 @Injectable()
 export class AuthService {

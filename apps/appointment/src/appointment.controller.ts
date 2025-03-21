@@ -5,7 +5,7 @@ import {
     ICreateAppointmentDto,
     IUpdateAppointmentDto,
 } from './types/appointment';
-import { IJwtUser } from '@app/common-utils';
+import { IJwtUser } from '@app/common-utils/jwt/user';
 
 @Controller()
 export class AppointmentController {

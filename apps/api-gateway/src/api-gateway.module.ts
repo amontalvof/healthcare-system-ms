@@ -11,6 +11,7 @@ import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { UserCacheInterceptor } from './interceptors/user-cache.interceptor';
+import { DoctorModule } from './microservices/doctor/doctor.module';
 
 @Module({
     imports: [
@@ -41,6 +42,7 @@ import { UserCacheInterceptor } from './interceptors/user-cache.interceptor';
         AuthModule,
         PatientModule,
         AppointmentModule,
+        DoctorModule,
     ],
     controllers: [ApiGatewayController],
     providers: [

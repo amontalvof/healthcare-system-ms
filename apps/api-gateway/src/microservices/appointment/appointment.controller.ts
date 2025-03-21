@@ -16,7 +16,6 @@ import { CreateAppointmentDto } from './dtos/create-appointment.dto';
 import { UpdateAppointmentDto } from './dtos/update-appointment.dto';
 import { RolesGuard } from '../../guards/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { IJwtUser, Role } from '@app/common-utils';
 import {
     ApiBearerAuth,
     ApiOkResponse,
@@ -26,6 +25,7 @@ import {
 import { AppointmentResponseDto } from './response/appointment-response.dto';
 import { PaginatedAppointmentsDto } from './response/paginated-appointments.dto';
 import { User } from '../../decorators/user.decorator';
+import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 
 @ApiTags('appointment')
 @ApiBearerAuth()
@@ -38,7 +38,7 @@ export class AppointmentController {
         type: AppointmentResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient, Role.Doctor)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Post()
     async create(@Body() createAppointmentDto: CreateAppointmentDto) {
         return this.appointmentService.create(createAppointmentDto);
@@ -61,7 +61,7 @@ export class AppointmentController {
         description: 'Number of records per page',
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Doctor, Role.Patient)
+    @Roles(ERole.Admin, ERole.Doctor, ERole.Patient)
     @Get()
     async findAll(
         @User() user: IJwtUser,
@@ -78,7 +78,7 @@ export class AppointmentController {
         type: AppointmentResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient, Role.Doctor)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.appointmentService.findOne(id);
@@ -89,7 +89,7 @@ export class AppointmentController {
         type: AppointmentResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient, Role.Doctor)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Put(':id')
     async update(
         @Param('id', ParseIntPipe) id: number,
@@ -103,7 +103,7 @@ export class AppointmentController {
         type: AppointmentResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(ERole.Admin)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return this.appointmentService.remove(id);

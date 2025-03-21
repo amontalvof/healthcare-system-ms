@@ -2,7 +2,7 @@ import { Controller } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
-import { IJwtUser } from '@app/common-utils';
+import { IJwtUser } from '@app/common-utils/jwt/user';
 
 @Controller()
 export class PatientController {

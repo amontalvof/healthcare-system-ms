@@ -2,13 +2,12 @@ import { Module } from '@nestjs/common';
 import { AppointmentController } from './appointment.controller';
 import { AppointmentService } from './appointment.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import {
-    PrismaService,
-    QUEUE_CLIENT_NAMES,
-    QUEUE_NAMES,
-} from '@app/common-utils';
 import { envValidationSchema } from './config/joi.validation';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import {
+    QUEUE_CLIENT_NAMES,
+    QUEUE_NAMES,
+} from '@app/common-utils/queues/constants';
 
 @Module({
     imports: [
@@ -37,6 +36,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         ]),
     ],
     controllers: [AppointmentController],
-    providers: [AppointmentService, PrismaService],
+    providers: [AppointmentService],
 })
 export class AppointmentModule {}

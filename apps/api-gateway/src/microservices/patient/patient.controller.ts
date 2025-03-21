@@ -16,9 +16,9 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { User } from '../../decorators/user.decorator';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
-import { IJwtUser, Role } from '@app/common-utils';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PatientResponseDto } from './response/patient-response.dto';
+import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 
 @ApiTags('patients')
 @ApiBearerAuth()
@@ -31,7 +31,7 @@ export class PatientController {
         type: PatientResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient)
+    @Roles(ERole.Admin, ERole.Patient)
     @Post()
     async create(
         @User() user: IJwtUser,
@@ -45,7 +45,7 @@ export class PatientController {
         type: [PatientResponseDto],
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(ERole.Admin)
     @Get()
     async findAll() {
         return this.patientService.findAll();
@@ -56,7 +56,7 @@ export class PatientController {
         type: PatientResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient, Role.Doctor)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.patientService.findOne(id);
@@ -67,7 +67,7 @@ export class PatientController {
         type: PatientResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin, Role.Patient, Role.Doctor)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Put(':id')
     async update(
         @Param('id', ParseIntPipe) id: number,
@@ -81,7 +81,7 @@ export class PatientController {
         type: PatientResponseDto,
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(Role.Admin)
+    @Roles(ERole.Admin)
     @Delete(':id')
     async remove(@Param('id', ParseIntPipe) id: number) {
         return this.patientService.remove(id);

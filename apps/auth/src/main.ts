@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { CommonUtilsService, QUEUE_NAMES } from '@app/common-utils';
+import { CommonUtilsService } from '@app/common-utils';
 import { AuthModule } from './auth.module';
+import { QUEUE_NAMES } from '@app/common-utils/queues/constants';
 
 async function bootstrap() {
     const commonUtils = new CommonUtilsService();

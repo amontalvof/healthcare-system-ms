@@ -1,27 +1,10 @@
-export interface IUser {
-    _id?: string;
-    email: string;
-    password: string;
-    fullName: string;
-    isActive: boolean;
-    roles: string[];
-    verificationCode: string;
-    verificationCodeExpires: Date;
-    createdAt: Date;
-    updatedAt: Date;
-}
-
-export enum UserRole {
-    ADMIN = 'admin',
-    PATIENT = 'patient',
-    DOCTOR = 'doctor',
-}
+import { EUserRole } from '@app/common-utils/db/mongo/types/user';
 
 export interface IRegisterUserDto {
     email: string;
     password: string;
     fullName: string;
-    role: UserRole;
+    role: EUserRole;
 }
 
 export interface ILoginUserDto {

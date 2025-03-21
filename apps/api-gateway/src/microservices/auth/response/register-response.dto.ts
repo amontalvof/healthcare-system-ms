@@ -1,4 +1,4 @@
-import { Role } from '@app/common-utils';
+import { ERole } from '@app/common-utils/jwt/user';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterResponseDto {
@@ -15,7 +15,7 @@ export class RegisterResponseDto {
         description: 'The roles assigned to the user',
         isArray: true,
     })
-    roles: Role[];
+    roles: ERole[];
 
     @ApiProperty({ description: 'The unique identifier of the user' })
     _id: string;

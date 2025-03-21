@@ -1,12 +1,12 @@
-import { QUEUE_CLIENT_NAMES } from '@app/common-utils';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom, timeout } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { LoginUserDto } from './dtos/login.dto';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { VerifyDto } from './dtos/verify.dto';
 import { ResendVerificationDto } from './dtos/resend-verification.dto';
 import { exceptionHandler } from '../../errors/exceptions';
+import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
 
 @Injectable()
 export class AuthService {
