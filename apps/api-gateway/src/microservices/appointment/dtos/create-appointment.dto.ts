@@ -1,3 +1,4 @@
+import { EAppointmentStatus } from '@app/common-utils/db/postgres/types/appointment';
 import { ApiProperty } from '@nestjs/swagger';
 import {
     IsInt,
@@ -6,12 +7,6 @@ import {
     IsString,
     IsEnum,
 } from 'class-validator';
-
-export enum AppointmentStatus {
-    SCHEDULED = 'SCHEDULED',
-    CANCELLED = 'CANCELLED',
-    COMPLETED = 'COMPLETED',
-}
 
 export class CreateAppointmentDto {
     @ApiProperty({ description: 'ID of the patient' })
@@ -37,6 +32,6 @@ export class CreateAppointmentDto {
     cancelledReason?: string;
 
     @ApiProperty({ description: 'Status of the appointment' })
-    @IsEnum(AppointmentStatus)
-    status: AppointmentStatus;
+    @IsEnum(EAppointmentStatus)
+    status: EAppointmentStatus;
 }

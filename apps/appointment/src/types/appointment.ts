@@ -1,14 +1,10 @@
-export enum AppointmentStatus {
-    SCHEDULED = 'SCHEDULED',
-    COMPLETED = 'COMPLETED',
-    CANCELLED = 'CANCELLED',
-}
+import { EAppointmentStatus } from '@app/common-utils/db/postgres/types/appointment';
 
 export interface ICreateAppointmentDto {
     patientId: number;
     doctorId: number;
     date: Date;
-    status: AppointmentStatus;
+    status: EAppointmentStatus;
     reason?: string;
     cancelledReason?: string;
 }

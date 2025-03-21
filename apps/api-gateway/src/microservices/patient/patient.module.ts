@@ -36,6 +36,5 @@ import {
     ],
     controllers: [PatientController],
     providers: [PatientService, JwtStrategy],
-    exports: [ClientsModule],
 })
 export class PatientModule {}

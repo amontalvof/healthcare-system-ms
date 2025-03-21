@@ -3,6 +3,7 @@ export enum QUEUE_CLIENT_NAMES {
     AUTH_RMQ_CLIENT = 'AUTH_RMQ_CLIENT',
     APPOINTMENT_RMQ_CLIENT = 'APPOINTMENT_RMQ_CLIENT',
     PATIENT_RMQ_CLIENT = 'PATIENT_RMQ_CLIENT',
+    DOCTOR_RMQ_CLIENT = 'DOCTOR_RMQ_CLIENT',
 }
 
 export enum QUEUE_NAMES {
@@ -10,4 +11,5 @@ export enum QUEUE_NAMES {
     AUTH_QUEUE = 'auth_queue',
     APPOINTMENT_QUEUE = 'appointment_queue',
     PATIENT_QUEUE = 'patient_queue',
+    DOCTOR_QUEUE = 'doctor_queue',
 }
