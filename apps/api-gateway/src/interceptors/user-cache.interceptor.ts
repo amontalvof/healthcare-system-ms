@@ -8,7 +8,7 @@ export class UserCacheInterceptor extends CacheInterceptor {
         const defaultKey = super.trackBy(context);
         const request = context.switchToHttp().getRequest();
 
-        if (request?.user?.userId) {
+        if (defaultKey && request?.user?.userId) {
             // Append the userId to the default cache key
             return `${defaultKey}:${request.user.userId}`;
         }
