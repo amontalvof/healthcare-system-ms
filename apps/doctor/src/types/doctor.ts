@@ -8,3 +8,5 @@ export interface ICreateDoctorDto {
     countryCode: string;
     phone: string;
 }
+
+export interface IUpdateDoctorDto extends Partial<ICreateDoctorDto> {}

@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
 import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
@@ -22,18 +22,45 @@ export class DoctorService {
     }
 
     findAll() {
-        return `This action returns all doctor`;
+        return lastValueFrom(
+            this.doctorClient.send({ cmd: 'read.doctors' }, {}),
+        );
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} doctor`;
+    async findOne(id: number) {
+        const result = await lastValueFrom(
+            this.doctorClient.send({ cmd: 'read.doctor' }, id),
+        );
+        if (!result) {
+            this.handleNotFound(id);
+        }
+        return result;
     }
 
-    update(id: number, updateDoctorDto: UpdateDoctorDto) {
-        return `This action updates a #${id} doctor`;
+    async update(id: number, updateDoctorDto: UpdateDoctorDto) {
+        const result = await lastValueFrom(
+            this.doctorClient.send(
+                { cmd: 'update.doctor' },
+                { id, updateDoctorDto },
+            ),
+        );
+        if (!result) {
+            this.handleNotFound(id);
+        }
+        return result;
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} doctor`;
+    async remove(id: number) {
+        const result = await lastValueFrom(
+            this.doctorClient.send({ cmd: 'delete.doctor' }, id),
+        );
+        if (!result) {
+            this.handleNotFound(id);
+        }
+        return result;
+    }
+
+    private handleNotFound(id: number) {
+        throw new NotFoundException(`Doctor with ID ${id} not found`);
     }
 }

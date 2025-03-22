@@ -8,6 +8,8 @@ async function bootstrap() {
     const commonUtils = new CommonUtilsService();
     const app = await NestFactory.create(ApiGatewayModule);
 
+    app.setGlobalPrefix('api');
+
     app.enableCors({
         origin: process.env.CORS_ORIGIN,
         methods: process.env.CORS_METHODS,
