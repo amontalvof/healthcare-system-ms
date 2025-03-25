@@ -15,5 +15,6 @@
         "titleBar.inactiveForeground": "#e7e7e799"
     },
     "peacock.color": "#E0234E",
-    "cSpell.words": ["SENDGRID"]
+    "cSpell.words": ["SENDGRID"],
+    "postman.settings.dotenv-detection-notification-visibility": false
 }

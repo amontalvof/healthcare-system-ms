@@ -17,10 +17,7 @@ import { DoctorModule } from './microservices/doctor/doctor.module';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath:
-                process.env.NODE_ENV === 'production'
-                    ? '.env'
-                    : './apps/api-gateway/.env',
+            envFilePath: './apps/api-gateway/.env',
             validationSchema: envValidationSchema,
         }),
         ThrottlerModule.forRoot({

@@ -7,10 +7,7 @@ import { ConfigModule } from '@nestjs/config';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath:
-                process.env.NODE_ENV === 'production'
-                    ? '.env'
-                    : './apps/billing/.env',
+            envFilePath: './apps/billing/.env',
         }),
     ],
     controllers: [BillingController],

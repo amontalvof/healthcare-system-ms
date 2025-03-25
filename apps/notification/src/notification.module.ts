@@ -9,10 +9,7 @@ import { CommonUtilsModule } from '@app/common-utils';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath:
-                process.env.NODE_ENV === 'production'
-                    ? '.env'
-                    : './apps/notification/.env',
+            envFilePath: './apps/notification/.env',
             validationSchema: envValidationSchema,
         }),
         CommonUtilsModule,

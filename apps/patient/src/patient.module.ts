@@ -13,10 +13,7 @@ import { CommonUtilsModule } from '@app/common-utils';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath:
-                process.env.NODE_ENV === 'production'
-                    ? '.env'
-                    : './apps/patient/.env',
+            envFilePath: './apps/patient/.env',
             validationSchema: envValidationSchema,
         }),
         TypeOrmModule.forRoot({
