@@ -18,7 +18,7 @@ import { CommonUtilsModule } from '@app/common-utils';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: './apps/appointment/.env',
+            envFilePath: '.env',
             validationSchema: envValidationSchema,
         }),
         ClientsModule.registerAsync([

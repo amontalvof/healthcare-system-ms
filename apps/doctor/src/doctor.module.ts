@@ -13,7 +13,7 @@ import { CommonUtilsModule } from '@app/common-utils';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: './apps/doctor/.env',
+            envFilePath: '.env',
             validationSchema: envValidationSchema,
         }),
         TypeOrmModule.forRoot({

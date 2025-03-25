@@ -9,7 +9,7 @@ import { CommonUtilsModule } from '@app/common-utils';
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: './apps/notification/.env',
+            envFilePath: '.env',
             validationSchema: envValidationSchema,
         }),
         CommonUtilsModule,

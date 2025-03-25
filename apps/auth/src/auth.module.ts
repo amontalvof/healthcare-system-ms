@@ -21,7 +21,7 @@ import {
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
-            envFilePath: './apps/auth/.env',
+            envFilePath: '.env',
             validationSchema: envValidationSchema,
         }),
         MongooseModule.forRoot(process.env.MONGO_DB_URI),
