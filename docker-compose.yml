@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+    healthcare-system:
+        build: .
+        env_file: .env
+        image: healthcare-system:latest
+        container_name: app
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '3001:3001'
