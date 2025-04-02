@@ -4,7 +4,7 @@ services:
     healthcare-system:
         build: .
         env_file: .env
-        image: healthcare-system:latest
+        image: hc-nest-ms-backend:latest
         container_name: app
         volumes:
             - .:/usr/src/app
