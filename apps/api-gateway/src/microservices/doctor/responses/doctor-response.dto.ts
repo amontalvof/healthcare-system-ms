@@ -41,7 +41,7 @@ export class DoctorResponseDto {
         description: 'Clinic address of the doctor',
         example: '123 Doe St.',
     })
-    clinicAddress: string;
+    address: string;
 
     @ApiProperty({
         description: 'Country code of the doctor',

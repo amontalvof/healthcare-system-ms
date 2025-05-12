@@ -22,12 +22,13 @@ export class RegisterUserDto {
 
     @ApiProperty({ description: 'Full name of the user' })
     @IsString()
-    @MinLength(6)
+    @MinLength(4)
     @MaxLength(50)
     fullName: string;
 
     @ApiProperty({ description: 'Password of the user' })
     @IsString()
+    @MinLength(8)
     @MaxLength(50)
     @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
         message:

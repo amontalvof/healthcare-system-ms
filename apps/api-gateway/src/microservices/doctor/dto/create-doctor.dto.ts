@@ -25,7 +25,7 @@ export class CreateDoctorDto {
     @ApiProperty({ description: 'Clinic address of the doctor' })
     @IsNotEmpty()
     @IsString()
-    clinicAddress: string;
+    address: string;
 
     @ApiProperty({ description: 'Country code of the doctor' })
     @IsNotEmpty()

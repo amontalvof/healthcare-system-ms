@@ -52,7 +52,7 @@ export class AppointmentService {
                 date: result.date,
                 doctor: result.doctor.fullName,
                 clinic: result.doctor.clinic,
-                address: result.doctor.clinicAddress,
+                address: result.doctor.address,
                 countryCode: result.doctor.countryCode,
                 phone: result.doctor.phone,
             });

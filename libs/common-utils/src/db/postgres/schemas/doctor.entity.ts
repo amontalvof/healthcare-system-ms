@@ -22,14 +22,29 @@ export class Doctor {
     @Column({ unique: true })
     userId: string;
 
+    @Column({ nullable: true })
+    imageUrl: string;
+
     @Column()
     specialty: string;
+
+    @Column()
+    degree: string;
+
+    @Column()
+    experience: string;
+
+    @Column({ nullable: true })
+    about: string;
+
+    @Column()
+    fees: number;
 
     @Column()
     clinic: string;
 
     @Column()
-    clinicAddress: string;
+    address: string;
 
     @Column()
     countryCode: string;
