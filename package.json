@@ -24,7 +24,10 @@
         "start:dev:doctor": "nest start doctor --watch",
         "start:dev:notification": "nest start notification --watch",
         "start:dev:patient": "nest start patient --watch",
-        "start:dev:all": "concurrently \"npm run start:dev:api-gateway\" \"npm run start:dev:appointment\" \"npm run start:dev:auth\" \"npm run start:dev:doctor\" \"npm run start:dev:notification\" \"npm run start:dev:patient\""
+        "start:dev:all": "concurrently \"npm run start:dev:api-gateway\" \"npm run start:dev:appointment\" \"npm run start:dev:auth\" \"npm run start:dev:doctor\" \"npm run start:dev:notification\" \"npm run start:dev:patient\"",
+        "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --dataSource data-source.ts",
+        "db:sync": "npm run typeorm -- schema:sync",
+        "db:log": "npm run typeorm -- schema:log"
     },
     "dependencies": {
         "@keyv/redis": "^4.3.1",
