@@ -5,10 +5,15 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
+    DeleteDateColumn,
+    ManyToOne,
+    JoinColumn,
 } from 'typeorm';
 import { Appointment } from './appointment.entity';
+import { InsurancesList } from './insurancesList.entity';
+import { Address } from './address.entity';
 
-@Entity()
+@Entity({ name: 'patients' })
 export class Patient {
     @PrimaryGeneratedColumn()
     id: number;
@@ -28,9 +33,6 @@ export class Patient {
     @Column()
     phone: string;
 
-    @Column()
-    address: string;
-
     // Use the JSON type for PostgreSQL
     @Column({ type: 'json' })
     emergencyContact: unknown;
@@ -40,6 +42,17 @@ export class Patient {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
+
+    @ManyToOne(() => InsurancesList, (insurance) => insurance.patients)
+    @JoinColumn({ name: 'insuranceId' })
+    insurance: InsurancesList;
+
+    @ManyToOne(() => Address, (address) => address.patients)
+    @JoinColumn({ name: 'addressId' })
+    address: Address;
 
     @OneToMany(() => Appointment, (appointment) => appointment.patient)
     appointments: Appointment[];

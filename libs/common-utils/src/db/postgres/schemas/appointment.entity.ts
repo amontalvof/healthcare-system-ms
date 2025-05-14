@@ -8,13 +8,15 @@ import {
     JoinColumn,
     Unique,
     Index,
+    DeleteDateColumn,
 } from 'typeorm';
 import { Patient } from './patient.entity';
 import { Doctor } from './doctor.entity';
 import { EAppointmentStatus } from '../types/appointment';
+import { TimeSlot } from './timeSlot.entity';
 
-@Entity()
-@Unique(['patientId', 'doctorId', 'date'])
+@Entity({ name: 'appointments' })
+@Unique(['patientId', 'doctorId', 'slotId'])
 export class Appointment {
     @PrimaryGeneratedColumn()
     id: number;
@@ -28,8 +30,9 @@ export class Appointment {
     @Index()
     doctorId: number;
 
-    @Column({ type: 'timestamp' })
-    date: Date;
+    @Column()
+    @Index()
+    slotId: number;
 
     @Column({ nullable: true })
     reason?: string;
@@ -49,17 +52,20 @@ export class Appointment {
     @UpdateDateColumn()
     updatedAt: Date;
 
+    @DeleteDateColumn()
+    deletedAt?: Date;
+
     // Define the relation with Patient
-    @ManyToOne(() => Patient, (patient) => patient.appointments, {
-        onDelete: 'CASCADE',
-    })
+    @ManyToOne(() => Patient, (patient) => patient.appointments)
     @JoinColumn({ name: 'patientId' })
     patient: Patient;
 
     // Define the relation with Doctor
-    @ManyToOne(() => Doctor, (doctor) => doctor.appointments, {
-        onDelete: 'CASCADE',
-    })
+    @ManyToOne(() => Doctor, (doctor) => doctor.appointments)
     @JoinColumn({ name: 'doctorId' })
     doctor: Doctor;
+
+    @ManyToOne(() => TimeSlot, (slot) => slot.appointment, { eager: true })
+    @JoinColumn({ name: 'slotId' })
+    slot: TimeSlot;
 }
