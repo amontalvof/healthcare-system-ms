@@ -13,7 +13,10 @@ async function bootstrap() {
             options: {
                 urls: [process.env.RMQ_URL],
                 queue: QUEUE_NAMES.AUTH_QUEUE,
-                queueOptions: { durable: false },
+                queueOptions: { durable: true, autoDelete: false },
+                socketOptions: {
+                    heartbeat: process.env.NODE_ENV === 'development' ? 0 : 120, // 120 seconds
+                },
             },
         },
     );

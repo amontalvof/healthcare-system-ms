@@ -7,6 +7,7 @@ import {
     Param,
     Delete,
     UseGuards,
+    ParseIntPipe,
 } from '@nestjs/common';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
@@ -54,8 +55,8 @@ export class DoctorController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.doctorService.findOne(+id);
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.doctorService.findOne(id);
     }
 
     @ApiOkResponse({
@@ -65,8 +66,11 @@ export class DoctorController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Patch(':id')
-    update(@Param('id') id: string, @Body() updateDoctorDto: UpdateDoctorDto) {
-        return this.doctorService.update(+id, updateDoctorDto);
+    update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() updateDoctorDto: UpdateDoctorDto,
+    ) {
+        return this.doctorService.update(id, updateDoctorDto);
     }
 
     @ApiOkResponse({
@@ -76,7 +80,7 @@ export class DoctorController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.doctorService.remove(+id);
+    remove(@Param('id', ParseIntPipe) id: number) {
+        return this.doctorService.remove(id);
     }
 }

@@ -31,7 +31,13 @@ import { CommonUtilsModule } from '@app/common-utils';
                     options: {
                         urls: [configService.get<string>('RMQ_URL')],
                         queue: QUEUE_NAMES.NOTIFICATION_QUEUE,
-                        queueOptions: { durable: false },
+                        queueOptions: { durable: true, autoDelete: false },
+                        socketOptions: {
+                            heartbeat:
+                                process.env.NODE_ENV === 'development'
+                                    ? 0
+                                    : 120, // 120 seconds
+                        },
                     },
                 }),
             },

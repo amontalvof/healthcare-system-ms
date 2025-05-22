@@ -6,11 +6,13 @@ import {
     UpdateDateColumn,
     DeleteDateColumn,
     OneToMany,
+    Unique,
 } from 'typeorm';
 import { Doctor } from './doctor.entity';
 import { Patient } from './patient.entity';
 
 @Entity({ name: 'addresses' })
+@Unique(['street', 'city', 'state', 'postalCode'])
 export class Address {
     @PrimaryGeneratedColumn()
     id: number;
