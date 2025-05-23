@@ -2,27 +2,27 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class AddressInputDto {
-    @ApiProperty({ description: 'Street address of the hospital' })
+    @ApiProperty({ description: 'Street' })
     @IsNotEmpty()
     @IsString()
     street: string;
 
-    @ApiProperty({ description: 'City of the hospital' })
+    @ApiProperty({ description: 'City' })
     @IsNotEmpty()
     @IsString()
     city: string;
 
-    @ApiProperty({ description: 'State of the hospital' })
+    @ApiProperty({ description: 'State' })
     @IsNotEmpty()
     @IsString()
     state: string;
 
-    @ApiProperty({ description: 'Postal code of the hospital' })
+    @ApiProperty({ description: 'Postal Code' })
     @IsNotEmpty()
     @IsString()
     postalCode: string;
 
-    @ApiProperty({ description: 'Country of the hospital', required: false })
+    @ApiProperty({ description: 'Country', required: false })
     @IsOptional()
     @IsString()
     country?: string;

@@ -1,6 +1,14 @@
+import { AddressInputDto } from '@app/common-utils/api/address-input.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import {
+    IsEmail,
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+    ValidateNested,
+} from 'class-validator';
 
 export class EmergencyContactDto {
     @ApiProperty({ description: 'Name of the emergency contact' })
@@ -26,8 +34,22 @@ export class CreatePatientDto {
     fullName: string;
 
     @ApiProperty({ description: 'Email of the patient' })
+    @IsNotEmpty()
     @IsEmail()
     email: string;
+
+    @ApiProperty({ description: 'User ID of the patient' })
+    @IsNotEmpty()
+    @IsString()
+    userId: string;
+
+    @ApiProperty({
+        description: 'Profile image URL of the patient',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    imageUrl?: string;
 
     @ApiProperty({ description: 'Country code of the patient' })
     @IsNotEmpty()
@@ -39,10 +61,15 @@ export class CreatePatientDto {
     @IsString()
     phone: string;
 
-    @ApiProperty({ description: 'Address of the patient' })
+    @ApiProperty({ description: 'Insurance ID' })
     @IsNotEmpty()
-    @IsString()
-    address: string;
+    @IsInt()
+    insuranceId: number;
+
+    @ApiProperty({ description: 'Address of the patient' })
+    @ValidateNested()
+    @Type(() => AddressInputDto)
+    address: AddressInputDto;
 
     @ApiProperty({
         description: 'Emergency contact details',

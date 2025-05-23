@@ -27,6 +27,9 @@ export class Patient {
     @Column({ unique: true })
     userId: string;
 
+    @Column({ nullable: true })
+    imageUrl: string;
+
     @Column()
     countryCode: string;
 

@@ -1,9 +1,13 @@
+import { AddressInput } from '@app/common-utils/db/postgres/types/address';
+
 export interface ICreatePatientDto {
     fullName: string;
     email: string;
+    userId: string;
     countryCode: string;
     phone: string;
-    address: string;
+    insuranceId: number;
+    address: AddressInput;
     emergencyContact: {
         fullName: string;
         countryCode: string;
@@ -11,4 +15,5 @@ export interface ICreatePatientDto {
     };
 }
 
-export interface IUpdatePatientDto extends Partial<ICreatePatientDto> {}
+export interface IUpdatePatientDto
+    extends Omit<Partial<ICreatePatientDto>, 'userId' | 'email'> {}
