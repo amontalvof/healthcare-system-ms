@@ -107,7 +107,7 @@ export class PatientService {
         if (!patient) {
             return null;
         }
-        await this.patientRepository.remove(patient);
+        await this.patientRepository.softRemove(patient);
         return patient;
     }
 }

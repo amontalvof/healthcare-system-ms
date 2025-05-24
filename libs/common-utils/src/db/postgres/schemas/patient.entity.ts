@@ -12,6 +12,7 @@ import {
 import { Appointment } from './appointment.entity';
 import { InsurancesList } from './insurancesList.entity';
 import { Address } from './address.entity';
+import { ESex } from '../types/patient';
 
 @Entity({ name: 'patients' })
 export class Patient {
@@ -39,6 +40,16 @@ export class Patient {
     // Use the JSON type for PostgreSQL
     @Column({ type: 'json' })
     emergencyContact: unknown;
+
+    @Column({
+        type: 'enum',
+        enum: ESex,
+        default: ESex.MALE,
+    })
+    sex: ESex;
+
+    @Column()
+    birthDate: string;
 
     @CreateDateColumn()
     createdAt: Date;

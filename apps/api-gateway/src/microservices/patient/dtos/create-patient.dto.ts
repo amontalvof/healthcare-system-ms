@@ -1,12 +1,15 @@
 import { AddressInputDto } from '@app/common-utils/api/address-input.dto';
+import { ESex } from '@app/common-utils/db/postgres/types/patient';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
     IsEmail,
+    IsEnum,
     IsInt,
     IsNotEmpty,
     IsOptional,
     IsString,
+    Matches,
     ValidateNested,
 } from 'class-validator';
 
@@ -70,6 +73,28 @@ export class CreatePatientDto {
     @ValidateNested()
     @Type(() => AddressInputDto)
     address: AddressInputDto;
+
+    @ApiProperty({
+        description: 'Date of birth of the patient (YYYY-MM-DD)',
+        type: String,
+        format: 'date',
+    })
+    @IsNotEmpty()
+    @IsString()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+        message: 'birthDate must be in YYYY-MM-DD format',
+    })
+    birthDate: string;
+
+    @ApiProperty({
+        description: 'Sex of the patient',
+        enum: ESex,
+    })
+    @IsNotEmpty()
+    @IsEnum(ESex, {
+        message: `sex must be one of: ${Object.values(ESex).join(', ')}`,
+    })
+    sex: ESex;
 
     @ApiProperty({
         description: 'Emergency contact details',

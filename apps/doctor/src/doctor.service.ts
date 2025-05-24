@@ -126,7 +126,7 @@ export class DoctorService {
         if (!doctor) {
             return null;
         }
-        await this.doctorRepository.remove(doctor);
+        await this.doctorRepository.softRemove(doctor);
         return doctor;
     }
 }
