@@ -13,10 +13,9 @@ import {
 import { Patient } from './patient.entity';
 import { Doctor } from './doctor.entity';
 import { EAppointmentStatus } from '../types/appointment';
-import { TimeSlot } from './timeSlot.entity';
 
 @Entity({ name: 'appointments' })
-@Unique(['patientId', 'doctorId', 'slotId'])
+@Unique(['patientId', 'doctorId', 'date', 'startTime'])
 export class Appointment {
     @PrimaryGeneratedColumn()
     id: number;
@@ -30,10 +29,6 @@ export class Appointment {
     @Index()
     doctorId: number;
 
-    @Column()
-    @Index()
-    slotId: number;
-
     @Column({ nullable: true })
     reason?: string;
 
@@ -45,6 +40,18 @@ export class Appointment {
         enum: EAppointmentStatus,
     })
     status: EAppointmentStatus;
+
+    /** the date of the slot (year-month-day) */
+    @Column({ type: 'date' })
+    date: string;
+
+    /** slot start time (e.g. '10:00') */
+    @Column({ type: 'time' })
+    startTime: string;
+
+    /** slot end time (e.g. '10:30') */
+    @Column({ type: 'time' })
+    endTime: string;
 
     @CreateDateColumn()
     createdAt: Date;
@@ -64,8 +71,4 @@ export class Appointment {
     @ManyToOne(() => Doctor, (doctor) => doctor.appointments)
     @JoinColumn({ name: 'doctorId' })
     doctor: Doctor;
-
-    @ManyToOne(() => TimeSlot, (slot) => slot.appointment, { eager: true })
-    @JoinColumn({ name: 'slotId' })
-    slot: TimeSlot;
 }

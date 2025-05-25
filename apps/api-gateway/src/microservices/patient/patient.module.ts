@@ -24,12 +24,6 @@ import {
                         urls: [configService.get<string>('RMQ_URL')],
                         queue: QUEUE_NAMES.PATIENT_QUEUE,
                         queueOptions: { durable: true, autoDelete: false },
-                        socketOptions: {
-                            heartbeat:
-                                process.env.NODE_ENV === 'development'
-                                    ? 0
-                                    : 120, // 120 seconds
-                        },
                     },
                 }),
             },

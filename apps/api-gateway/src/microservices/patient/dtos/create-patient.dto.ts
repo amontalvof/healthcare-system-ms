@@ -3,6 +3,7 @@ import { ESex } from '@app/common-utils/db/postgres/types/patient';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
+    IsDateString,
     IsEmail,
     IsEnum,
     IsInt,
@@ -80,7 +81,7 @@ export class CreatePatientDto {
         format: 'date',
     })
     @IsNotEmpty()
-    @IsString()
+    @IsDateString()
     @Matches(/^\d{4}-\d{2}-\d{2}$/, {
         message: 'birthDate must be in YYYY-MM-DD format',
     })

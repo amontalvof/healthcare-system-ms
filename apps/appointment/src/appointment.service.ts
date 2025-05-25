@@ -30,7 +30,9 @@ export class AppointmentService {
                 .values({
                     patientId: createAppointmentDto.patientId,
                     doctorId: createAppointmentDto.doctorId,
-                    date: new Date(createAppointmentDto.date),
+                    date: createAppointmentDto.date,
+                    startTime: createAppointmentDto.startTime,
+                    endTime: createAppointmentDto.endTime,
                     reason: createAppointmentDto.reason,
                     status: createAppointmentDto.status,
                 })
@@ -51,8 +53,8 @@ export class AppointmentService {
                 name: result.patient.fullName,
                 date: result.date,
                 doctor: result.doctor.fullName,
-                clinic: result.doctor.clinic,
-                address: result.doctor.address,
+                hospital: result.doctor.hospital,
+                address: result.doctor.hospitalAddress,
                 countryCode: result.doctor.countryCode,
                 phone: result.doctor.phone,
             });
@@ -89,7 +91,10 @@ export class AppointmentService {
     }
 
     async findOne(id: number) {
-        return this.appointmentRepository.findOne({ where: { id } });
+        return this.appointmentRepository.findOne({
+            where: { id },
+            relations: ['patient', 'doctor'],
+        });
     }
 
     async update(id: number, updateAppointmentDto: IUpdateAppointmentDto) {
@@ -98,8 +103,14 @@ export class AppointmentService {
             return null;
         }
 
-        if (updateAppointmentDto.date) {
-            appointment.date = new Date(updateAppointmentDto.date);
+        if (updateAppointmentDto.date !== undefined) {
+            appointment.date = updateAppointmentDto.date;
+        }
+        if (updateAppointmentDto.startTime !== undefined) {
+            appointment.startTime = updateAppointmentDto.startTime;
+        }
+        if (updateAppointmentDto.endTime !== undefined) {
+            appointment.endTime = updateAppointmentDto.endTime;
         }
         if (updateAppointmentDto.reason !== undefined) {
             appointment.reason = updateAppointmentDto.reason;
@@ -119,7 +130,7 @@ export class AppointmentService {
         if (!appointment) {
             return null;
         }
-        await this.appointmentRepository.remove(appointment);
+        await this.appointmentRepository.softRemove(appointment);
         return appointment;
     }
 }

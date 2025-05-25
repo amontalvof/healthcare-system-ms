@@ -6,6 +6,8 @@ import {
     IsOptional,
     IsString,
     IsEnum,
+    Matches,
+    IsNotEmpty,
 } from 'class-validator';
 
 export class CreateAppointmentDto {
@@ -19,7 +21,21 @@ export class CreateAppointmentDto {
 
     @ApiProperty({ description: 'Date of the appointment' })
     @IsDateString()
+    @IsNotEmpty()
+    @Matches(/^\d{4}-\d{2}-\d{2}$/, {
+        message: 'Date must be in YYYY-MM-DD format',
+    })
     date: string;
+
+    @ApiProperty({ description: 'Start time (HH:MM)' })
+    @IsNotEmpty()
+    @IsString()
+    startTime?: string;
+
+    @ApiProperty({ description: 'End time (HH:MM)' })
+    @IsNotEmpty()
+    @IsString()
+    endTime?: string;
 
     @ApiProperty({ description: 'Reason for the appointment' })
     @IsOptional()

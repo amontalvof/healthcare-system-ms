@@ -4,7 +4,6 @@ import { Doctor } from './doctor.entity';
 import { InsurancesList } from './insurancesList.entity';
 import { Patient } from './patient.entity';
 import { SpecialtiesList } from './specialtiesList.entity';
-import { TimeSlot } from './timeSlot.entity';
 
 export const entities = [
     Address,
@@ -13,5 +12,4 @@ export const entities = [
     InsurancesList,
     Patient,
     SpecialtiesList,
-    TimeSlot,
 ];

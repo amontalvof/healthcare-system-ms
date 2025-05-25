@@ -14,7 +14,6 @@ import { Appointment } from './appointment.entity';
 import { Address } from './address.entity';
 import { InsurancesList } from './insurancesList.entity';
 import { SpecialtiesList } from './specialtiesList.entity';
-import { TimeSlot } from './timeSlot.entity';
 
 @Entity({ name: 'doctors' })
 export class Doctor {
@@ -69,10 +68,6 @@ export class Doctor {
 
     @DeleteDateColumn()
     deletedAt?: Date;
-
-    /** all the individual slots this doctor offers */
-    @OneToMany(() => TimeSlot, (slot) => slot.doctor, { cascade: ['insert'] })
-    slots: TimeSlot[];
 
     @ManyToMany(() => InsurancesList, (insurance) => insurance.doctors)
     insurancesList: InsurancesList[];

@@ -1,15 +1,79 @@
+// .vscode/launch.json
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach",
-            "port": 9229,
+            "name": "Attach ➜ API-Gateway",
+            "type": "node",
             "request": "attach",
+            "restart": true,
+            "port": 9229,
             "skipFiles": ["<node_internals>/**"],
-            "type": "node"
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach ➜ Appointment",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9230,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach ➜ Auth",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9231,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach ➜ Doctor",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9232,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach ➜ Notification",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9233,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Attach ➜ Patient",
+            "type": "node",
+            "request": "attach",
+            "restart": true,
+            "port": 9234,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "${workspaceFolder}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "🔥 Attach All Services",
+            "configurations": [
+                "Attach ➜ API-Gateway",
+                "Attach ➜ Appointment",
+                "Attach ➜ Auth",
+                "Attach ➜ Doctor",
+                "Attach ➜ Notification",
+                "Attach ➜ Patient"
+            ]
         }
     ]
 }

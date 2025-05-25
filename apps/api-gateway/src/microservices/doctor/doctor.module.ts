@@ -24,12 +24,6 @@ import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
                         urls: [configService.get<string>('RMQ_URL')],
                         queue: QUEUE_NAMES.DOCTOR_QUEUE,
                         queueOptions: { durable: true, autoDelete: false },
-                        socketOptions: {
-                            heartbeat:
-                                process.env.NODE_ENV === 'development'
-                                    ? 0
-                                    : 120, // 120 seconds
-                        },
                     },
                 }),
             },
