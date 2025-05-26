@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3001
 
 # Start all services in development mode
-CMD ["npm", "run", "start:dev:all"]
+CMD ["npm", "run", "start:debug:all"]

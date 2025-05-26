@@ -1,13 +1,72 @@
 version: '3.8'
 
 services:
-    healthcare-system:
+    api-gateway:
         build: .
+        container_name: api-gateway
         env_file: .env
-        image: hc-nest-ms-backend:latest
-        container_name: app
+        # override the default CMD to run only this service in debug+watch mode
+        command: npm run start:debug:api-gateway
         volumes:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
+            # HTTP
             - '3001:3001'
+            # Debug
+            - '9229:9229'
+
+    appointment:
+        build: .
+        container_name: appointment
+        env_file: .env
+        command: npm run start:debug:appointment
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9230:9230'
+
+    auth:
+        build: .
+        container_name: auth
+        env_file: .env
+        command: npm run start:debug:auth
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9231:9231'
+
+    doctor:
+        build: .
+        container_name: doctor
+        env_file: .env
+        command: npm run start:debug:doctor
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9232:9232'
+
+    notification:
+        build: .
+        container_name: notification
+        env_file: .env
+        command: npm run start:debug:notification
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9233:9233'
+
+    patient:
+        build: .
+        container_name: patient
+        env_file: .env
+        command: npm run start:debug:patient
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9234:9234'

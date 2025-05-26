@@ -3,64 +3,82 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "request": "attach",
             "name": "Attach ➜ API-Gateway",
-            "type": "node",
-            "request": "attach",
-            "restart": true,
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9229,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         },
         {
+            "type": "node",
+            "request": "attach",
             "name": "Attach ➜ Appointment",
-            "type": "node",
-            "request": "attach",
-            "restart": true,
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9230,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         },
         {
+            "type": "node",
+            "request": "attach",
             "name": "Attach ➜ Auth",
-            "type": "node",
-            "request": "attach",
-            "restart": true,
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9231,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         },
         {
+            "type": "node",
+            "request": "attach",
             "name": "Attach ➜ Doctor",
-            "type": "node",
-            "request": "attach",
-            "restart": true,
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9232,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         },
         {
+            "type": "node",
+            "request": "attach",
             "name": "Attach ➜ Notification",
-            "type": "node",
-            "request": "attach",
-            "restart": true,
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9233,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         },
         {
-            "name": "Attach ➜ Patient",
             "type": "node",
             "request": "attach",
-            "restart": true,
+            "name": "Attach ➜ Patient",
+            "protocol": "inspector",
+            "address": "localhost",
             "port": 9234,
+            "sourceMaps": true,
+            "restart": true,
             "skipFiles": ["<node_internals>/**"],
             "localRoot": "${workspaceFolder}",
-            "remoteRoot": "${workspaceFolder}"
+            "remoteRoot": "/usr/src/app"
         }
     ],
     "compounds": [
