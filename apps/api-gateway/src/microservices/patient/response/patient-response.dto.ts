@@ -1,3 +1,5 @@
+import { AddressInputDto } from '@app/common-utils/api/address-input.dto';
+import { InsuranceResponseDto } from '@app/common-utils/api/Insurance-response-dto';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class EmergencyContactResponseDto {
@@ -36,6 +38,24 @@ export class PatientResponseDto {
     })
     userId: string;
 
+    @ApiProperty({
+        description: 'Image URL of the patient',
+        example: 'https://example.com/image.jpg',
+    })
+    imageUrl: string;
+
+    @ApiProperty({
+        description: 'Sex of the patient',
+        example: 'male',
+    })
+    sex: string;
+
+    @ApiProperty({
+        description: 'Birth date of the patient',
+        example: '1990-01-01',
+    })
+    birthDate: string;
+
     @ApiProperty({ description: 'Country code of the patient', example: 'US' })
     countryCode: string;
 
@@ -47,15 +67,21 @@ export class PatientResponseDto {
 
     @ApiProperty({
         description: 'Address of the patient',
-        example: 'Lorem Ipsum Dolor',
+        type: AddressInputDto,
     })
-    address: string;
+    address: AddressInputDto;
 
     @ApiProperty({
         description: 'Emergency contact information',
         type: EmergencyContactResponseDto,
     })
     emergencyContact: EmergencyContactResponseDto;
+
+    @ApiProperty({
+        description: 'Insurance information of the patient',
+        type: InsuranceResponseDto,
+    })
+    insurance: InsuranceResponseDto;
 
     @ApiProperty({
         description: 'Creation date of the patient record',
@@ -68,4 +94,10 @@ export class PatientResponseDto {
         example: '2025-03-10T19:12:46.542Z',
     })
     updatedAt: Date;
+
+    @ApiProperty({
+        description: 'Deletion date of the patient record, null if not deleted',
+        example: null,
+    })
+    deletedAt: Date | null;
 }

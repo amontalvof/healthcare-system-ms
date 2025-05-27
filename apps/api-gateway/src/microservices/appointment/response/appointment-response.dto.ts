@@ -21,9 +21,9 @@ export class AppointmentResponseDto {
 
     @ApiProperty({
         description: 'The appointment date and time',
-        example: '2024-09-15T12:55:23.000Z',
+        example: '2024-09-15',
     })
-    date: Date;
+    date: string;
 
     @ApiProperty({
         description: 'The reason for the appointment',
@@ -45,6 +45,18 @@ export class AppointmentResponseDto {
     status: string;
 
     @ApiProperty({
+        description: ' The start time of the appointment',
+        example: '10:00:00',
+    })
+    startTime: string;
+
+    @ApiProperty({
+        description: ' The end time of the appointment',
+        example: '11:00:00',
+    })
+    endTime: string;
+
+    @ApiProperty({
         description: 'The creation date of the appointment',
         example: '2025-03-10T19:21:33.220Z',
     })
@@ -55,4 +67,11 @@ export class AppointmentResponseDto {
         example: '2025-03-10T19:21:33.220Z',
     })
     updatedAt: Date;
+
+    @ApiProperty({
+        description: 'The deletion date of the appointment, if deleted',
+        example: null,
+        nullable: true,
+    })
+    deletedAt: Date;
 }
