@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Expose the ports that your apps use
-EXPOSE 3001
+EXPOSE 3000
 
 # Start all services in development mode
 CMD ["npm", "run", "start:debug:all"]

@@ -44,7 +44,7 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Attach ➜ Doctor",
+            "name": "Attach ➜ Billing",
             "protocol": "inspector",
             "address": "localhost",
             "port": 9232,
@@ -57,7 +57,7 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Attach ➜ Notification",
+            "name": "Attach ➜ Doctor",
             "protocol": "inspector",
             "address": "localhost",
             "port": 9233,
@@ -70,10 +70,23 @@
         {
             "type": "node",
             "request": "attach",
-            "name": "Attach ➜ Patient",
+            "name": "Attach ➜ Notification",
             "protocol": "inspector",
             "address": "localhost",
             "port": 9234,
+            "sourceMaps": true,
+            "restart": true,
+            "skipFiles": ["<node_internals>/**"],
+            "localRoot": "${workspaceFolder}",
+            "remoteRoot": "/usr/src/app"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach ➜ Patient",
+            "protocol": "inspector",
+            "address": "localhost",
+            "port": 9235,
             "sourceMaps": true,
             "restart": true,
             "skipFiles": ["<node_internals>/**"],
@@ -88,6 +101,7 @@
                 "Attach ➜ API-Gateway",
                 "Attach ➜ Appointment",
                 "Attach ➜ Auth",
+                "Attach ➜ Billing",
                 "Attach ➜ Doctor",
                 "Attach ➜ Notification",
                 "Attach ➜ Patient"

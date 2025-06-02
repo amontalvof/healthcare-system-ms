@@ -12,7 +12,7 @@ services:
             - /usr/src/app/node_modules
         ports:
             # HTTP
-            - '3001:3001'
+            - '3000:3000'
             # Debug
             - '9229:9229'
 
@@ -38,6 +38,17 @@ services:
         ports:
             - '9231:9231'
 
+    billing:
+        build: .
+        container_name: billing
+        env_file: .env
+        command: npm run start:debug:billing
+        volumes:
+            - .:/usr/src/app
+            - /usr/src/app/node_modules
+        ports:
+            - '9231:9232'
+
     doctor:
         build: .
         container_name: doctor
@@ -47,7 +58,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9232:9232'
+            - '9232:9233'
 
     notification:
         build: .
@@ -58,7 +69,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9233:9233'
+            - '9233:9234'
 
     patient:
         build: .
@@ -69,4 +80,4 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9234:9234'
+            - '9234:9235'
