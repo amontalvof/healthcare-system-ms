@@ -47,7 +47,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9231:9232'
+            - '9232:9232'
 
     doctor:
         build: .
@@ -58,7 +58,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9232:9233'
+            - '9233:9233'
 
     notification:
         build: .
@@ -69,7 +69,7 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9233:9234'
+            - '9234:9234'
 
     patient:
         build: .
@@ -80,4 +80,4 @@ services:
             - .:/usr/src/app
             - /usr/src/app/node_modules
         ports:
-            - '9234:9235'
+            - '9235:9235'

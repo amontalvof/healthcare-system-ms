@@ -12,6 +12,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { UserCacheInterceptor } from './interceptors/user-cache.interceptor';
 import { DoctorModule } from './microservices/doctor/doctor.module';
+import { BillingModule } from './microservices/billing/billing.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { DoctorModule } from './microservices/doctor/doctor.module';
         PatientModule,
         AppointmentModule,
         DoctorModule,
+        BillingModule,
     ],
     controllers: [ApiGatewayController],
     providers: [
