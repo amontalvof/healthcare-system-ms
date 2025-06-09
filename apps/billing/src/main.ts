@@ -20,7 +20,7 @@ async function bootstrap() {
     await app.listen();
     commonUtils.colorLogger({
         type: 'log',
-        message: `Doctor microservice is listening for events...`,
+        message: `Billing microservice is listening for events...`,
     });
 }
 bootstrap();
