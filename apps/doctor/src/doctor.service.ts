@@ -129,4 +129,12 @@ export class DoctorService {
         await this.doctorRepository.softRemove(doctor);
         return doctor;
     }
+
+    async getDoctorsSpecialties() {
+        const specialties = await this.specialtyRepo.find();
+        if (!specialties || specialties.length === 0) {
+            return [];
+        }
+        return specialties;
+    }
 }

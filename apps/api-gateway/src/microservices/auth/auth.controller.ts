@@ -8,6 +8,7 @@ import { LoginResponseDto } from './response/login-response.dto';
 import { VerifyDto } from './dtos/verify.dto';
 import { VerifyResponseDto } from './response/verify-response.dto';
 import { ResendVerificationDto } from './dtos/resend-verification.dto';
+
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

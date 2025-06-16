@@ -19,9 +19,10 @@ import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 import { Roles } from '../../decorators/roles.decorator';
 import { User } from '../../decorators/user.decorator';
 import { DoctorResponseDto } from './responses/doctor-response.dto';
+import { SpecialtiesResponseDto } from './responses/specialties-response.dto';
+import { Public } from '../../decorators/public.decorator';
 
 @ApiTags('doctors')
-@ApiBearerAuth()
 @Controller('doctor')
 export class DoctorController {
     constructor(private readonly doctorService: DoctorService) {}
@@ -30,6 +31,7 @@ export class DoctorController {
         description: 'Doctor created successfully',
         type: DoctorResponseDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Post()
@@ -41,6 +43,7 @@ export class DoctorController {
         description: 'List of doctors',
         type: [DoctorResponseDto],
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Get()
@@ -48,10 +51,21 @@ export class DoctorController {
         return this.doctorService.findAll();
     }
 
+    @Public()
+    @ApiOkResponse({
+        description: 'List of doctors specialties',
+        type: [SpecialtiesResponseDto],
+    })
+    @Get('specialties')
+    async getDoctorsSpecialties() {
+        return this.doctorService.getDoctorsSpecialties();
+    }
+
     @ApiOkResponse({
         description: 'Doctor found successfully',
         type: DoctorResponseDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Get(':id')
@@ -63,6 +77,7 @@ export class DoctorController {
         description: 'Doctor updated successfully',
         type: DoctorResponseDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Patch(':id')
@@ -77,6 +92,7 @@ export class DoctorController {
         description: 'Doctor removed successfully',
         type: DoctorResponseDto,
     })
+    @ApiBearerAuth()
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin)
     @Delete(':id')

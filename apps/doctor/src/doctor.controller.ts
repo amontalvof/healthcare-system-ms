@@ -37,4 +37,9 @@ export class DoctorController {
     async remove(id: number) {
         return this.doctorService.remove(id);
     }
+
+    @MessagePattern({ cmd: 'read.doctors.specialties' })
+    async getDoctorsSpecialties() {
+        return this.doctorService.getDoctorsSpecialties();
+    }
 }

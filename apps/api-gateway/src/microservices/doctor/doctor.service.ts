@@ -60,6 +60,16 @@ export class DoctorService {
         return result;
     }
 
+    async getDoctorsSpecialties() {
+        const result = await lastValueFrom(
+            this.doctorClient.send({ cmd: 'read.doctors.specialties' }, {}),
+        );
+        if (!result?.length) {
+            throw new NotFoundException('No specialties found');
+        }
+        return result;
+    }
+
     private handleNotFound(id: number) {
         throw new NotFoundException(`Doctor with ID ${id} not found`);
     }

@@ -10,6 +10,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
+import { RolesGuard } from '../../guards/roles.guard';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 
 @Module({
     imports: [
@@ -35,6 +37,6 @@ import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
         }),
     ],
     controllers: [DoctorController],
-    providers: [DoctorService, JwtStrategy],
+    providers: [DoctorService, JwtStrategy, RolesGuard, JwtAuthGuard],
 })
 export class DoctorModule {}
