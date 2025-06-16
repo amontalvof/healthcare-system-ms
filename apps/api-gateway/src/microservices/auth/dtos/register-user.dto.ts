@@ -37,6 +37,8 @@ export class RegisterUserDto {
     password: string;
 
     @ApiProperty({ description: 'User role' })
-    @IsEnum(UserRole)
+    @IsEnum(UserRole, {
+        message: 'Role must be one of the following: patient, doctor',
+    })
     role: string;
 }

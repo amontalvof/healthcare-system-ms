@@ -71,9 +71,14 @@ export class AuthService {
                 message: 'User is not verified',
             };
         }
-        const payload = { sub: user._id, email: user.email, roles: user.roles };
+        const payload = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            roles: user.roles,
+        };
         return {
-            access_token: this.jwtService.sign(payload),
+            accessToken: this.jwtService.sign(payload),
         };
     }
 
@@ -88,7 +93,7 @@ export class AuthService {
             return {
                 ok: false,
                 exception: 'BadRequestException',
-                message: 'Invalid verification code or email',
+                message: 'Invalid verification code',
             };
         }
 
@@ -124,13 +129,6 @@ export class AuthService {
                 ok: false,
                 exception: 'BadRequestException',
                 message: 'User is already verified',
-            };
-        }
-        if (dayjs(user.verificationCodeExpires).isAfter(dayjs())) {
-            return {
-                ok: false,
-                exception: 'BadRequestException',
-                message: 'Verification code is still valid',
             };
         }
         const code = this.generateCode();
