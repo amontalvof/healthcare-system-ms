@@ -43,9 +43,7 @@ export class DoctorController {
         description: 'List of doctors',
         type: [DoctorResponseDto],
     })
-    @ApiBearerAuth()
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(ERole.Admin)
+    @Public()
     @Get()
     findAll() {
         return this.doctorService.findAll();

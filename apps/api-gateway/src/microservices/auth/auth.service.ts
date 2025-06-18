@@ -45,4 +45,11 @@ export class AuthService {
         );
         return exceptionHandler(result);
     }
+
+    async populateUsers() {
+        const result = await lastValueFrom(
+            this.authClient.send({ cmd: 'populate.users' }, {}),
+        );
+        return exceptionHandler(result);
+    }
 }

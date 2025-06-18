@@ -137,4 +137,130 @@ export class DoctorService {
         }
         return specialties;
     }
+
+    async populateInsurances() {
+        const { insurances } = await import('./data/seed');
+
+        try {
+            // Fetch existing insurances by name
+            const existing = await this.insuranceRepo.find({
+                where: insurances.map((i) => ({ name: i.name })),
+            });
+            const existingMap = new Map(existing.map((i) => [i.name, i]));
+
+            // Prepare entities: update if exists, create if not
+            const insuranceEntities = insurances.map(({ name }) => {
+                const entity = existingMap.get(name) || new InsurancesList();
+                entity.name = name;
+                return entity;
+            });
+
+            await this.insuranceRepo.save(insuranceEntities);
+            return { ok: true, message: 'Insurances populated successfully' };
+        } catch (error) {
+            return this.commonUtilsService.handleTypeOrmError(error);
+        }
+    }
+
+    async populateDoctorsSpecialties() {
+        const { specialties } = await import('./data/seed');
+
+        try {
+            // Fetch existing specialties by name
+            const existing = await this.specialtyRepo.find({
+                where: specialties.map((s) => ({ name: s.name })),
+            });
+            const existingMap = new Map(existing.map((s) => [s.name, s]));
+
+            // Prepare entities: update if exists, create if not
+            const specialtyEntities = specialties.map(
+                ({ name, route, image }) => {
+                    const entity =
+                        existingMap.get(name) || new SpecialtiesList();
+                    entity.name = name;
+                    entity.route = route;
+                    entity.image = image;
+                    return entity;
+                },
+            );
+
+            await this.specialtyRepo.save(specialtyEntities);
+            return { ok: true, message: 'Specialties populated successfully' };
+        } catch (error) {
+            return this.commonUtilsService.handleTypeOrmError(error);
+        }
+    }
+
+    async populateDoctors() {
+        const { doctors } = await import('./data/seed');
+
+        try {
+            for (const doc of doctors) {
+                // Handle address
+                let savedAddress = await this.addressRepo.findOne({
+                    where: {
+                        street: doc.address.street,
+                        city: doc.address.city,
+                        state: doc.address.state,
+                        postalCode: doc.address.postalCode,
+                    },
+                });
+                if (!savedAddress) {
+                    savedAddress = await this.addressRepo.save(
+                        this.addressRepo.create(doc.address),
+                    );
+                }
+
+                // Handle specialty
+                const specialty = await this.specialtyRepo.findOne({
+                    where: { id: doc.specialtyId },
+                });
+
+                // Handle insurances
+                const insurances = [];
+                if (doc.insuranceIds?.length) {
+                    for (const id of doc.insuranceIds) {
+                        const insurance = await this.insuranceRepo.findOne({
+                            where: { id },
+                        });
+                        if (insurance) {
+                            insurances.push(insurance);
+                        }
+                    }
+                }
+
+                // Upsert doctor by email
+                let doctor = await this.doctorRepository.findOne({
+                    where: { email: doc.email },
+                    relations: [
+                        'hospitalAddress',
+                        'specialty',
+                        'insurancesList',
+                    ],
+                });
+
+                if (doctor) {
+                    // Update existing
+                    this.doctorRepository.merge(doctor, {
+                        ...doc,
+                        hospitalAddress: savedAddress,
+                        specialty,
+                        insurancesList: insurances,
+                    });
+                } else {
+                    // Create new
+                    doctor = this.doctorRepository.create({
+                        ...doc,
+                        hospitalAddress: savedAddress,
+                        specialty,
+                        insurancesList: insurances,
+                    });
+                }
+                await this.doctorRepository.save(doctor);
+            }
+            return { ok: true, message: 'Doctors populated successfully' };
+        } catch (error) {
+            return this.commonUtilsService.handleTypeOrmError(error);
+        }
+    }
 }

@@ -31,4 +31,9 @@ export class AuthController {
     async resendVerification(resendVerificationDto: IResendVerificationDto) {
         return this.authService.resendVerification(resendVerificationDto);
     }
+
+    @MessagePattern({ cmd: 'populate.users' })
+    async seedDoctorUsers() {
+        return this.authService.populateUsers();
+    }
 }

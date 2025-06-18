@@ -143,6 +143,23 @@ export class AuthService {
         return { ok: true, message: 'Verification code resent successfully' };
     }
 
+    async populateUsers() {
+        const { users } = await import('./data/seed');
+        const mappedDoctorUsers = users.map((item) => ({
+            ...item,
+            password: bcrypt.hashSync(item.password, 10),
+        }));
+        const bulkOps = mappedDoctorUsers.map((user) => ({
+            updateOne: {
+                filter: { email: user.email },
+                update: { $set: user },
+                upsert: true,
+            },
+        }));
+        await this.userModel.bulkWrite(bulkOps);
+        return { ok: true, message: 'Users populated successfully' };
+    }
+
     private async validateUser(email: string, password: string): Promise<User> {
         const user = await this.userModel.findOne({ email });
         if (user && (await bcrypt.compare(password, user.password))) {

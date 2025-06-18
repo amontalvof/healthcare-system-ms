@@ -8,4 +8,6 @@ export const envValidationSchema = Joi.object({
     CORS_ORIGIN: Joi.string().required(),
     CORS_METHODS: Joi.string().required(),
     REDIS_URL: Joi.string().required(),
+    SEED_BASIC_USER: Joi.string().required(),
+    SEED_BASIC_PASS: Joi.string().required(),
 });

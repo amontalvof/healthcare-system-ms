@@ -29,6 +29,6 @@ import {
     ],
     controllers: [AuthController],
     providers: [AuthService],
-    exports: [ClientsModule],
+    exports: [ClientsModule, AuthService],
 })
 export class AuthModule {}

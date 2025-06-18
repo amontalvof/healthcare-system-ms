@@ -38,5 +38,6 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
     ],
     controllers: [DoctorController],
     providers: [DoctorService, JwtStrategy, RolesGuard, JwtAuthGuard],
+    exports: [DoctorService],
 })
 export class DoctorModule {}

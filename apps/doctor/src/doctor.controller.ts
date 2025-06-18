@@ -42,4 +42,19 @@ export class DoctorController {
     async getDoctorsSpecialties() {
         return this.doctorService.getDoctorsSpecialties();
     }
+
+    @MessagePattern({ cmd: 'populate.insurances' })
+    async populateInsurances() {
+        return this.doctorService.populateInsurances();
+    }
+
+    @MessagePattern({ cmd: 'populate.doctors.specialties' })
+    async populateDoctorsSpecialties() {
+        return this.doctorService.populateDoctorsSpecialties();
+    }
+
+    @MessagePattern({ cmd: 'populate.doctors' })
+    async populateDoctors() {
+        return this.doctorService.populateDoctors();
+    }
 }

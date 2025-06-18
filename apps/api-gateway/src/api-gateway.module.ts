@@ -13,6 +13,7 @@ import { createKeyv } from '@keyv/redis';
 import { UserCacheInterceptor } from './interceptors/user-cache.interceptor';
 import { DoctorModule } from './microservices/doctor/doctor.module';
 import { BillingModule } from './microservices/billing/billing.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
     imports: [
@@ -42,6 +43,7 @@ import { BillingModule } from './microservices/billing/billing.module';
         AppointmentModule,
         DoctorModule,
         BillingModule,
+        SeedModule,
     ],
     controllers: [ApiGatewayController],
     providers: [

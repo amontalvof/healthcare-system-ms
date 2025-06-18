@@ -70,6 +70,24 @@ export class DoctorService {
         return result;
     }
 
+    async populateInsurances() {
+        return lastValueFrom(
+            this.doctorClient.send({ cmd: 'populate.insurances' }, {}),
+        );
+    }
+
+    async populateDoctorsSpecialties() {
+        return lastValueFrom(
+            this.doctorClient.send({ cmd: 'populate.doctors.specialties' }, {}),
+        );
+    }
+
+    async populateDoctors() {
+        return lastValueFrom(
+            this.doctorClient.send({ cmd: 'populate.doctors' }, {}),
+        );
+    }
+
     private handleNotFound(id: number) {
         throw new NotFoundException(`Doctor with ID ${id} not found`);
     }
