@@ -46,14 +46,15 @@ export const specialties = [
 
 export const doctors = [
     {
-        fullName: 'John Smith',
-        email: 'john.smith@mail.com',
+        fullName: 'Donald Smith',
+        email: 'donald.smith@mail.com',
         userId: '1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d',
         degree: 'MD',
         experience: '10 years',
         fees: 200,
         hospital: 'Jackson Memorial Hospital',
         address: {
+            country: 'United States of America',
             street: '1611 NW 12th Ave',
             city: 'Miami',
             state: 'FL',
@@ -78,6 +79,7 @@ export const doctors = [
         fees: 180,
         hospital: 'Tampa General Hospital',
         address: {
+            country: 'United States of America',
             street: '1 Tampa General Circle',
             city: 'Tampa',
             state: 'FL',
@@ -102,6 +104,7 @@ export const doctors = [
         fees: 250,
         hospital: 'UF Health Shands Hospital',
         address: {
+            country: 'United States of America',
             street: '1329 SW 16th St',
             city: 'Gainesville',
             state: 'FL',
@@ -126,6 +129,7 @@ export const doctors = [
         fees: 150,
         hospital: 'Orlando Regional Medical Center',
         address: {
+            country: 'United States of America',
             street: '52 W Underwood St',
             city: 'Orlando',
             state: 'FL',
@@ -150,6 +154,7 @@ export const doctors = [
         fees: 300,
         hospital: 'Broward Health Medical Center',
         address: {
+            country: 'United States of America',
             street: '1600 S Andrews Ave',
             city: 'Fort Lauderdale',
             state: 'FL',
@@ -174,6 +179,7 @@ export const doctors = [
         fees: 175,
         hospital: 'Moffitt Cancer Center',
         address: {
+            country: 'United States of America',
             street: '12902 Magnolia Dr',
             city: 'Tampa',
             state: 'FL',
@@ -198,6 +204,7 @@ export const doctors = [
         fees: 220,
         hospital: 'AdventHealth Orlando',
         address: {
+            country: 'United States of America',
             street: '601 E Rollins St',
             city: 'Orlando',
             state: 'FL',
@@ -222,6 +229,7 @@ export const doctors = [
         fees: 160,
         hospital: "Johns Hopkins All Children's Hospital",
         address: {
+            country: 'United States of America',
             street: '501 6th Ave S',
             city: 'St. Petersburg',
             state: 'FL',
@@ -246,6 +254,7 @@ export const doctors = [
         fees: 210,
         hospital: 'Cleveland Clinic Florida',
         address: {
+            country: 'United States of America',
             street: '2950 Cleveland Clinic Blvd',
             city: 'Weston',
             state: 'FL',
@@ -270,6 +279,7 @@ export const doctors = [
         fees: 190,
         hospital: 'Baptist Hospital of Miami',
         address: {
+            country: 'United States of America',
             street: '8900 N Kendall Dr',
             city: 'Miami',
             state: 'FL',
@@ -294,6 +304,7 @@ export const doctors = [
         fees: 230,
         hospital: "Nicklaus Children's Hospital",
         address: {
+            country: 'United States of America',
             street: '3100 SW 62nd Ave',
             city: 'Miami',
             state: 'FL',
@@ -318,6 +329,7 @@ export const doctors = [
         fees: 140,
         hospital: "Ascension St. Vincent's Medical Center",
         address: {
+            country: 'United States of America',
             street: '4201 Latham St',
             city: 'Jacksonville',
             state: 'FL',
@@ -342,6 +354,7 @@ export const doctors = [
         fees: 195,
         hospital: 'UF Health Jacksonville',
         address: {
+            country: 'United States of America',
             street: '655 West 8th Street',
             city: 'Jacksonville',
             state: 'FL',
@@ -366,6 +379,7 @@ export const doctors = [
         fees: 205,
         hospital: 'Sarasota Memorial Hospital',
         address: {
+            country: 'United States of America',
             street: '1700 S Tamiami Trail',
             city: 'Sarasota',
             state: 'FL',
@@ -390,6 +404,7 @@ export const doctors = [
         fees: 170,
         hospital: 'Lee Memorial Hospital',
         address: {
+            country: 'United States of America',
             street: '2776 Cleveland Ave',
             city: 'Fort Myers',
             state: 'FL',
