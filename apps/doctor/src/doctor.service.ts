@@ -138,6 +138,14 @@ export class DoctorService {
         return specialties;
     }
 
+    async getInsurancesList() {
+        const insurances = await this.insuranceRepo.find();
+        if (!insurances || insurances.length === 0) {
+            return [];
+        }
+        return insurances;
+    }
+
     async populateInsurances() {
         const { insurances } = await import('./data/seed');
 

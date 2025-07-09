@@ -47,14 +47,6 @@ export class CreatePatientDto {
     @IsString()
     userId: string;
 
-    @ApiProperty({
-        description: 'Profile image URL of the patient',
-        required: false,
-    })
-    @IsOptional()
-    @IsString()
-    imageUrl?: string;
-
     @ApiProperty({ description: 'Country code of the patient' })
     @IsNotEmpty()
     @IsString()

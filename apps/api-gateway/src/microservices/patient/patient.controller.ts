@@ -57,8 +57,8 @@ export class PatientController {
     })
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
-    @Get(':id')
-    async findOne(@Param('id', ParseIntPipe) id: number) {
+    @Get(':identifier')
+    async findOne(@Param('identifier') id: string) {
         return this.patientService.findOne(id);
     }
 

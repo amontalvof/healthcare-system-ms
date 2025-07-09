@@ -21,6 +21,7 @@ import { User } from '../../decorators/user.decorator';
 import { DoctorResponseDto } from './responses/doctor-response.dto';
 import { SpecialtiesResponseDto } from './responses/specialties-response.dto';
 import { Public } from '../../decorators/public.decorator';
+import { InsurancesResponseDto } from './responses/insurances-response.dto';
 
 @ApiTags('doctors')
 @Controller('doctor')
@@ -57,6 +58,18 @@ export class DoctorController {
     @Get('specialties')
     async getDoctorsSpecialties() {
         return this.doctorService.getDoctorsSpecialties();
+    }
+
+    @ApiOkResponse({
+        description: 'List of insurances',
+        type: [InsurancesResponseDto],
+    })
+    @ApiBearerAuth()
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Doctor, ERole.Patient)
+    @Get('insurances')
+    async getInsurancesList() {
+        return this.doctorService.getInsurancesList();
     }
 
     @ApiOkResponse({

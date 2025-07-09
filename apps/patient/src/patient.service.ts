@@ -63,6 +63,13 @@ export class PatientService {
         });
     }
 
+    async findByUserId(userId: string) {
+        return this.patientRepository.findOne({
+            where: { userId },
+            relations: ['address', 'insurance'],
+        });
+    }
+
     async update(id: number, updatePatientDto: IUpdatePatientDto) {
         const patient = await this.patientRepository.findOne({
             where: { id },

@@ -70,6 +70,16 @@ export class DoctorService {
         return result;
     }
 
+    async getInsurancesList() {
+        const result = await lastValueFrom(
+            this.doctorClient.send({ cmd: 'read.insurances.list' }, {}),
+        );
+        if (!result?.length) {
+            throw new NotFoundException('No insurances found');
+        }
+        return result;
+    }
+
     async populateInsurances() {
         return lastValueFrom(
             this.doctorClient.send({ cmd: 'populate.insurances' }, {}),

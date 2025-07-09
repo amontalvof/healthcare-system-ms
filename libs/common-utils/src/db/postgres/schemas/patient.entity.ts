@@ -37,7 +37,6 @@ export class Patient {
     @Column()
     phone: string;
 
-    // Use the JSON type for PostgreSQL
     @Column({ type: 'json' })
     emergencyContact: unknown;
 

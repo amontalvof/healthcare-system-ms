@@ -28,7 +28,7 @@ export class PatientService {
         );
     }
 
-    async findOne(id: number) {
+    async findOne(id: string) {
         const result = await lastValueFrom(
             this.patientClient.send({ cmd: 'read.patient' }, id),
         );
@@ -61,7 +61,7 @@ export class PatientService {
         return result;
     }
 
-    private handleNotFound(id: number) {
-        throw new NotFoundException(`Patient with ID ${id} not found`);
+    private handleNotFound(id: string | number) {
+        throw new NotFoundException(`Patient with identifier ${id} not found`);
     }
 }

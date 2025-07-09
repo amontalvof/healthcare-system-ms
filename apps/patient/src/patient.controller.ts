@@ -22,8 +22,12 @@ export class PatientController {
     }
 
     @MessagePattern({ cmd: 'read.patient' })
-    async findOne(id: number) {
-        return this.patientService.findOne(id);
+    async findOne(identifier: string) {
+        const id = Number(identifier);
+        if (!isNaN(id)) {
+            return this.patientService.findOne(id);
+        }
+        return this.patientService.findByUserId(identifier);
     }
 
     @MessagePattern({ cmd: 'update.patient' })

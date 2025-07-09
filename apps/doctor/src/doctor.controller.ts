@@ -43,6 +43,11 @@ export class DoctorController {
         return this.doctorService.getDoctorsSpecialties();
     }
 
+    @MessagePattern({ cmd: 'read.insurances.list' })
+    async getInsurancesList() {
+        return this.doctorService.getInsurancesList();
+    }
+
     @MessagePattern({ cmd: 'populate.insurances' })
     async populateInsurances() {
         return this.doctorService.populateInsurances();
