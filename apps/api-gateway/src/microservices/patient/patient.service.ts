@@ -28,12 +28,12 @@ export class PatientService {
         );
     }
 
-    async findOne(id: string) {
+    async findOne(identifier: string) {
         const result = await lastValueFrom(
-            this.patientClient.send({ cmd: 'read.patient' }, id),
+            this.patientClient.send({ cmd: 'read.patient' }, identifier),
         );
         if (!result) {
-            this.handleNotFound(id);
+            this.handleNotFound(identifier);
         }
         return result;
     }

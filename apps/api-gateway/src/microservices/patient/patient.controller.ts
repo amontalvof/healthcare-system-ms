@@ -1,4 +1,5 @@
 import {
+    BadRequestException,
     Body,
     Controller,
     Delete,
@@ -7,7 +8,9 @@ import {
     ParseIntPipe,
     Post,
     Put,
+    UploadedFile,
     UseGuards,
+    UseInterceptors,
 } from '@nestjs/common';
 import { PatientService } from './patient.service';
 import { CreatePatientDto } from './dtos/create-patient.dto';
@@ -19,12 +22,35 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { PatientResponseDto } from './response/patient-response.dto';
 import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { imageFilter } from '../../utils';
 
 @ApiTags('patients')
 @ApiBearerAuth()
 @Controller('patient')
 export class PatientController {
     constructor(private readonly patientService: PatientService) {}
+
+    @Post(':identifier/image')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Patient)
+    @UseInterceptors(
+        FileInterceptor('profileImage', {
+            fileFilter: imageFilter,
+            limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB limit
+        }),
+    )
+    uploadImage(
+        @Param('identifier') identifier: string,
+        @UploadedFile() profileImage: Express.Multer.File,
+    ) {
+        if (!profileImage) {
+            throw new BadRequestException(
+                'Please upload a valid image file. Allowed extensions: jpg, jpeg, png.',
+            );
+        }
+        return { identifier, profileImage };
+    }
 
     @ApiOkResponse({
         description: 'Patient created successfully',
@@ -58,8 +84,8 @@ export class PatientController {
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
     @Get(':identifier')
-    async findOne(@Param('identifier') id: string) {
-        return this.patientService.findOne(id);
+    async findOne(@Param('identifier') identifier: string) {
+        return this.patientService.findOne(identifier);
     }
 
     @ApiOkResponse({
