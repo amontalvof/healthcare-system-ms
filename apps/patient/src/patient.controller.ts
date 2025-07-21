@@ -7,6 +7,17 @@ import { ICreatePatientDto, IUpdatePatientDto } from './types/patient';
 export class PatientController {
     constructor(private readonly patientService: PatientService) {}
 
+    @MessagePattern({ cmd: 'upload.patient.image' })
+    async uploadImage({
+        userId,
+        profileImage,
+    }: {
+        userId: string;
+        profileImage: Express.Multer.File;
+    }) {
+        return this.patientService.uploadImage(userId, profileImage);
+    }
+
     @MessagePattern({ cmd: 'create.patient' })
     async create({
         createPatientDto,

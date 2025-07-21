@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Patient } from '@app/common-utils/db/postgres/schemas/patient.entity';
 import { Address } from '@app/common-utils/db/postgres/schemas/address.entity';
 import { Repository } from 'typeorm';
-import { CommonUtilsService } from '@app/common-utils';
+import { CommonUtilsService, CloudinaryService } from '@app/common-utils';
 import { InsurancesList } from '@app/common-utils/db/postgres/schemas/insurancesList.entity';
 
 @Injectable()
@@ -17,7 +17,31 @@ export class PatientService {
         @InjectRepository(InsurancesList)
         private readonly insuranceRepo: Repository<InsurancesList>,
         private readonly commonUtilsService: CommonUtilsService,
+        private readonly cloudinaryService: CloudinaryService,
     ) {}
+
+    async uploadImage(userId: string, profileImage: Express.Multer.File) {
+        const originalName = profileImage.originalname;
+        const extension = originalName.substring(originalName.lastIndexOf('.'));
+        const newFileName = `${userId}${extension}`;
+        profileImage.filename = newFileName;
+        const secureUrl = await this.cloudinaryService.upload(
+            profileImage,
+            'healthcare/patients',
+        );
+        if (!secureUrl) {
+            return {
+                ok: false,
+                exception: 'InternalServerErrorException',
+                message: 'Failed to upload image',
+            };
+        }
+        await this.patientRepository.update(
+            { userId },
+            { imageUrl: secureUrl },
+        );
+        return { secureUrl };
+    }
 
     async create(createPatientDto: ICreatePatientDto) {
         try {

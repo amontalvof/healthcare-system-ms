@@ -31,7 +31,7 @@ import { imageFilter } from '../../utils';
 export class PatientController {
     constructor(private readonly patientService: PatientService) {}
 
-    @Post(':identifier/image')
+    @Post('image')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin, ERole.Patient)
     @UseInterceptors(
@@ -41,7 +41,7 @@ export class PatientController {
         }),
     )
     uploadImage(
-        @Param('identifier') identifier: string,
+        @User() user: IJwtUser,
         @UploadedFile() profileImage: Express.Multer.File,
     ) {
         if (!profileImage) {
@@ -49,7 +49,7 @@ export class PatientController {
                 'Please upload a valid image file. Allowed extensions: jpg, jpeg, png.',
             );
         }
-        return { identifier, profileImage };
+        return this.patientService.uploadImage(user, profileImage);
     }
 
     @ApiOkResponse({

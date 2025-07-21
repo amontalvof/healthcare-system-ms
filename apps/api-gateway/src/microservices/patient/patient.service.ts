@@ -5,6 +5,7 @@ import { lastValueFrom } from 'rxjs';
 import { UpdatePatientDto } from './dtos/update-patient.dto';
 import { IJwtUser } from '@app/common-utils/jwt/user';
 import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
+import { exceptionHandler } from '../../errors/exceptions';
 
 @Injectable()
 export class PatientService {
@@ -12,6 +13,16 @@ export class PatientService {
         @Inject(QUEUE_CLIENT_NAMES.PATIENT_RMQ_CLIENT)
         private readonly patientClient: ClientProxy,
     ) {}
+
+    async uploadImage(user: IJwtUser, profileImage: Express.Multer.File) {
+        const result = await lastValueFrom(
+            this.patientClient.send(
+                { cmd: 'upload.patient.image' },
+                { userId: user.userId, profileImage },
+            ),
+        );
+        return exceptionHandler(result);
+    }
 
     create(user: IJwtUser, createPatientDto: CreatePatientDto) {
         return lastValueFrom(

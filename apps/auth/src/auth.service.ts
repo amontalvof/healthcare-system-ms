@@ -14,12 +14,15 @@ import { randomInt } from 'crypto';
 import dayjs from 'dayjs';
 import { User } from '@app/common-utils/db/mongo/schemas/user.schema';
 import { QUEUE_CLIENT_NAMES } from '@app/common-utils/queues/constants';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AuthService {
     constructor(
         @Inject(QUEUE_CLIENT_NAMES.NOTIFICATION_RMQ_CLIENT)
         private readonly notificationClient: ClientProxy,
+        @Inject(QUEUE_CLIENT_NAMES.PATIENT_RMQ_CLIENT)
+        private readonly patientClient: ClientProxy,
         @InjectModel(User.name)
         private readonly userModel: Model<User>,
         private readonly jwtService: JwtService,
@@ -71,11 +74,13 @@ export class AuthService {
                 message: 'User is not verified',
             };
         }
+        const imageUrl = await this.resolveUserImage(user._id, user.roles);
         const payload = {
             _id: user._id,
             fullName: user.fullName,
             email: user.email,
             roles: user.roles,
+            imageUrl: imageUrl,
         };
         return {
             accessToken: this.jwtService.sign(payload),
@@ -170,5 +175,19 @@ export class AuthService {
 
     private generateCode(): string {
         return randomInt(100000, 1000000).toString();
+    }
+
+    private async resolveUserImage(userId: string, roles) {
+        if (roles.includes('patient')) {
+            const patient = await lastValueFrom(
+                this.patientClient.send({ cmd: 'read.patient' }, userId),
+            );
+            return patient?.imageUrl || '';
+        }
+        if (roles.includes('doctor')) {
+            // Logic to resolve doctor image if needed
+            return '';
+        }
+        return '';
     }
 }

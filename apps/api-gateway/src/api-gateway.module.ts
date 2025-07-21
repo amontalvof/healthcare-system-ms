@@ -31,12 +31,11 @@ import { SeedModule } from './seed/seed.module';
             ],
         }),
         CacheModule.registerAsync({
-            useFactory: async () => {
-                return {
-                    stores: [createKeyv(process.env.REDIS_URL)],
-                    ttl: 60000,
-                };
-            },
+            isGlobal: true,
+            useFactory: async () => ({
+                stores: [createKeyv(process.env.REDIS_URL)],
+                ttl: 60000,
+            }),
         }),
         AuthModule,
         PatientModule,

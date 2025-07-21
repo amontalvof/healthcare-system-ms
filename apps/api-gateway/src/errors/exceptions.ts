@@ -3,6 +3,7 @@ import {
     ConflictException,
     NotFoundException,
     UnauthorizedException,
+    InternalServerErrorException,
 } from '@nestjs/common';
 
 export const exceptionsMap = {
@@ -10,6 +11,7 @@ export const exceptionsMap = {
     ConflictException,
     UnauthorizedException,
     NotFoundException,
+    InternalServerErrorException,
 };
 
 export const exceptionHandler = (params: {

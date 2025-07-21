@@ -45,6 +45,19 @@ import {
                     },
                 }),
             },
+            {
+                name: QUEUE_CLIENT_NAMES.PATIENT_RMQ_CLIENT,
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: (configService: ConfigService) => ({
+                    transport: Transport.RMQ,
+                    options: {
+                        urls: [configService.get<string>('RMQ_URL')],
+                        queue: QUEUE_NAMES.PATIENT_QUEUE,
+                        queueOptions: { durable: true, autoDelete: false },
+                    },
+                }),
+            },
         ]),
     ],
     controllers: [AuthController],
