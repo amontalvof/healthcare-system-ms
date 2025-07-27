@@ -33,6 +33,16 @@ import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 export class AppointmentController {
     constructor(private readonly appointmentService: AppointmentService) {}
 
+    @Get('/booked-hours/:doctorId')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
+    async getBookedHours(
+        @Param('doctorId', ParseIntPipe) doctorId: number,
+        @Query('date') date: string,
+    ) {
+        return this.appointmentService.getBookedHours(doctorId, date);
+    }
+
     @ApiOkResponse({
         description: 'Appointment created successfully',
         type: AppointmentResponseDto,

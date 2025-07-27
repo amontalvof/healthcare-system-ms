@@ -133,4 +133,13 @@ export class AppointmentService {
         await this.appointmentRepository.softRemove(appointment);
         return appointment;
     }
+
+    async getBookedHours(doctorId: number, date: string) {
+        return this.appointmentRepository
+            .createQueryBuilder('appointment')
+            .select(['appointment.startTime', 'appointment.endTime'])
+            .where('appointment.doctorId = :doctorId', { doctorId })
+            .andWhere('appointment.date = :date', { date })
+            .getMany();
+    }
 }

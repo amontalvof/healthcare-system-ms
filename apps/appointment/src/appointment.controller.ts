@@ -49,4 +49,15 @@ export class AppointmentController {
     async remove(id: number) {
         return this.appointmentService.remove(id);
     }
+
+    @MessagePattern({ cmd: 'get.booked.hours' })
+    async getBookedHours({
+        doctorId,
+        date,
+    }: {
+        doctorId: number;
+        date: string;
+    }) {
+        return this.appointmentService.getBookedHours(doctorId, date);
+    }
 }

@@ -13,6 +13,13 @@ export class AppointmentService {
         private readonly appointmentClient: ClientProxy,
     ) {}
 
+    async getBookedHours(doctorId: number, date: string) {
+        return this.appointmentClient.send(
+            { cmd: 'get.booked.hours' },
+            { doctorId, date },
+        );
+    }
+
     create(createAppointmentDto: CreateAppointmentDto) {
         return this.appointmentClient.send(
             { cmd: 'create.appointment' },
