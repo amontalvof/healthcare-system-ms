@@ -154,13 +154,18 @@ export class AuthService {
             ...item,
             password: bcrypt.hashSync(item.password, 10),
         }));
-        const bulkOps = mappedDoctorUsers.map((user) => ({
-            updateOne: {
-                filter: { email: user.email },
-                update: { $set: user },
-                upsert: true,
-            },
-        }));
+        const bulkOps = mappedDoctorUsers.map((user) => {
+            const { _id, ...rest } = user as any;
+            return {
+                updateOne: {
+                    filter: { _id },
+                    update: {
+                        $set: { ...rest },
+                    },
+                    upsert: true,
+                },
+            };
+        });
         await this.userModel.bulkWrite(bulkOps);
         return { ok: true, message: 'Users populated successfully' };
     }

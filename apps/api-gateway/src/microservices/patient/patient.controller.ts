@@ -19,11 +19,19 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { User } from '../../decorators/user.decorator';
 import { Roles } from '../../decorators/roles.decorator';
 import { RolesGuard } from '../../guards/roles.guard';
-import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
+    ApiOkResponse,
+    ApiOperation,
+    ApiTags,
+} from '@nestjs/swagger';
 import { PatientResponseDto } from './response/patient-response.dto';
 import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFilter } from '../../utils';
+import { UploadImageResponseDto } from './response/upload-image-response.dto';
 
 @ApiTags('patients')
 @ApiBearerAuth()
@@ -31,6 +39,24 @@ import { imageFilter } from '../../utils';
 export class PatientController {
     constructor(private readonly patientService: PatientService) {}
 
+    @ApiOperation({ summary: 'Upload profile image (Patient)' })
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        description: 'Profile image file (jpg, jpeg, png)',
+        schema: {
+            type: 'object',
+            properties: {
+                profileImage: {
+                    type: 'string',
+                    format: 'binary',
+                },
+            },
+        },
+    })
+    @ApiOkResponse({
+        description: 'Image uploaded successfully',
+        type: UploadImageResponseDto,
+    })
     @Post('image')
     @UseGuards(JwtAuthGuard, RolesGuard)
     @Roles(ERole.Admin, ERole.Patient)

@@ -26,22 +26,13 @@ import { AppointmentResponseDto } from './response/appointment-response.dto';
 import { PaginatedAppointmentsDto } from './response/paginated-appointments.dto';
 import { User } from '../../decorators/user.decorator';
 import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
+import { BookedHoursResponseDto } from './response/booked-hours-response.dto';
 
 @ApiTags('appointment')
 @ApiBearerAuth()
 @Controller('appointment')
 export class AppointmentController {
     constructor(private readonly appointmentService: AppointmentService) {}
-
-    @Get('/booked-hours/:doctorId')
-    @UseGuards(JwtAuthGuard, RolesGuard)
-    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
-    async getBookedHours(
-        @Param('doctorId', ParseIntPipe) doctorId: number,
-        @Query('date') date: string,
-    ) {
-        return this.appointmentService.getBookedHours(doctorId, date);
-    }
 
     @ApiOkResponse({
         description: 'Appointment created successfully',
@@ -92,6 +83,21 @@ export class AppointmentController {
     @Get(':id')
     async findOne(@Param('id', ParseIntPipe) id: number) {
         return this.appointmentService.findOne(id);
+    }
+
+    @ApiOkResponse({
+        description: 'Get booked hours for a doctor',
+        type: BookedHoursResponseDto,
+        isArray: true,
+    })
+    @Get('/booked-hours/:doctorId')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Patient, ERole.Doctor)
+    async getBookedHours(
+        @Param('doctorId', ParseIntPipe) doctorId: number,
+        @Query('date') date: string,
+    ) {
+        return this.appointmentService.getBookedHours(doctorId, date);
     }
 
     @ApiOkResponse({

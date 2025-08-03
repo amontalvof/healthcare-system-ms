@@ -39,6 +39,12 @@ async function bootstrap() {
 
     const PORT = process.env.PORT;
     await app.listen(PORT);
+    const host = process.env.HOST || 'localhost';
+    const protocol = host === 'localhost' ? 'http' : 'https';
+    commonUtils.colorLogger({
+        type: 'log',
+        message: `Swagger is running on ${protocol}://${host}:${PORT}/api-docs`,
+    });
     commonUtils.colorLogger({
         type: 'log',
         message: `ApiGateway is running on port: ${PORT}`,

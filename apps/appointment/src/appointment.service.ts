@@ -10,6 +10,7 @@ import { CommonUtilsService } from '@app/common-utils';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from '@app/common-utils/db/postgres/schemas/appointment.entity';
 import { Repository } from 'typeorm';
+import { EAppointmentStatus } from '@app/common-utils/db/postgres/types/appointment';
 
 @Injectable()
 export class AppointmentService {
@@ -140,6 +141,9 @@ export class AppointmentService {
             .select(['appointment.startTime', 'appointment.endTime'])
             .where('appointment.doctorId = :doctorId', { doctorId })
             .andWhere('appointment.date = :date', { date })
+            .andWhere('appointment.status != :status', {
+                status: EAppointmentStatus.CANCELLED,
+            })
             .getMany();
     }
 }
