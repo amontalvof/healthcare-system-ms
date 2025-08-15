@@ -9,6 +9,11 @@ import {
     QUEUE_CLIENT_NAMES,
     QUEUE_NAMES,
 } from '@app/common-utils/queues/constants';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+    Payment,
+    PaymentSchema,
+} from '@app/common-utils/db/mongo/schemas/payment.schema';
 
 @Module({
     imports: [
@@ -17,6 +22,10 @@ import {
             envFilePath: '.env',
             validationSchema: envValidationSchema,
         }),
+        MongooseModule.forRoot(process.env.MONGO_DB_URI),
+        MongooseModule.forFeature([
+            { name: Payment.name, schema: PaymentSchema },
+        ]),
         CommonUtilsModule,
         ClientsModule.registerAsync([
             {

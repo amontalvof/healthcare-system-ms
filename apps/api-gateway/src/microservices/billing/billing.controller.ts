@@ -1,26 +1,39 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Body, Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { BillingService } from './billing.service';
+import { AppointmentPaymentSessionDto } from './dtos/appointment-payment-session.dto';
+import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
+import { RolesGuard } from '../../guards/roles.guard';
+import { ERole } from '@app/common-utils/jwt/user';
+import { Roles } from '../../decorators/roles.decorator';
 
 @Controller('billing')
 export class BillingController {
     constructor(private readonly billingService: BillingService) {}
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Doctor, ERole.Patient)
     @Post('create-payment-session')
-    createPaymentSession() {
-        return this.billingService.createPaymentSession();
+    createPaymentSession(
+        @Body() appointmentPaymentSessionDto: AppointmentPaymentSessionDto,
+    ) {
+        return this.billingService.createPaymentSession(
+            appointmentPaymentSessionDto,
+        );
     }
 
-    @Get('success')
-    success() {
-        return 'Payment successful!';
+    @Post('stripe-webhook')
+    async webhook(@Req() req: Request, @Res() res: Response) {
+        return this.billingService.webhook(req, res);
     }
 
-    @Get('cancel')
-    cancel() {
-        return 'Payment cancelled.';
+    @Post('charge-succeeded')
+    succeeded(@Req() req: Request, @Res() res: Response) {
+        res.status(200).json({ message: 'Payment successful' });
     }
 
-    @Post('webhook')
-    async webhook() {
-        return 'Webhook received.';
+    @Post('charge-failed')
+    failed(@Req() req: Request, @Res() res: Response) {
+        res.status(400).json({ message: 'Payment failed' });
     }
 }

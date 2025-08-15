@@ -6,7 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
     const commonUtils = new CommonUtilsService();
-    const app = await NestFactory.create(ApiGatewayModule);
+    const app = await NestFactory.create(ApiGatewayModule, { rawBody: true });
 
     app.setGlobalPrefix('api');
 
