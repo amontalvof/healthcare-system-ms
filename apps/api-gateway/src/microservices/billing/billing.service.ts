@@ -5,6 +5,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { AppointmentPaymentSessionDto } from './dtos/appointment-payment-session.dto';
 import stripe from 'stripe';
+import { IJwtUser } from '@app/common-utils/jwt/user';
 
 @Injectable()
 export class BillingService {
@@ -14,12 +15,16 @@ export class BillingService {
     ) {}
 
     createPaymentSession(
+        user: IJwtUser,
         appointmentPaymentSessionDto: AppointmentPaymentSessionDto,
     ) {
         return lastValueFrom(
             this.billingClient.send(
                 { cmd: 'create.payment.session' },
-                { ...appointmentPaymentSessionDto },
+                {
+                    userId: user.userId,
+                    appointmentPaymentSession: appointmentPaymentSessionDto,
+                },
             ),
         );
     }

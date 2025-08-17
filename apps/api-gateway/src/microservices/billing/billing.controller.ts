@@ -4,8 +4,9 @@ import { BillingService } from './billing.service';
 import { AppointmentPaymentSessionDto } from './dtos/appointment-payment-session.dto';
 import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
 import { RolesGuard } from '../../guards/roles.guard';
-import { ERole } from '@app/common-utils/jwt/user';
+import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 import { Roles } from '../../decorators/roles.decorator';
+import { User } from '../../decorators/user.decorator';
 
 @Controller('billing')
 export class BillingController {
@@ -15,9 +16,11 @@ export class BillingController {
     @Roles(ERole.Admin, ERole.Doctor, ERole.Patient)
     @Post('create-payment-session')
     createPaymentSession(
+        @User() user: IJwtUser,
         @Body() appointmentPaymentSessionDto: AppointmentPaymentSessionDto,
     ) {
         return this.billingService.createPaymentSession(
+            user,
             appointmentPaymentSessionDto,
         );
     }
@@ -25,15 +28,5 @@ export class BillingController {
     @Post('stripe-webhook')
     async webhook(@Req() req: Request, @Res() res: Response) {
         return this.billingService.webhook(req, res);
-    }
-
-    @Post('charge-succeeded')
-    succeeded(@Req() req: Request, @Res() res: Response) {
-        res.status(200).json({ message: 'Payment successful' });
-    }
-
-    @Post('charge-failed')
-    failed(@Req() req: Request, @Res() res: Response) {
-        res.status(400).json({ message: 'Payment failed' });
     }
 }

@@ -33,6 +33,19 @@ import { entities } from '@app/common-utils/db/postgres/schemas';
                     },
                 }),
             },
+            {
+                name: QUEUE_CLIENT_NAMES.BILLING_RMQ_CLIENT,
+                imports: [ConfigModule],
+                inject: [ConfigService],
+                useFactory: (configService: ConfigService) => ({
+                    transport: Transport.RMQ,
+                    options: {
+                        urls: [configService.get<string>('RMQ_URL')],
+                        queue: QUEUE_NAMES.BILLING_QUEUE,
+                        queueOptions: { durable: true, autoDelete: false },
+                    },
+                }),
+            },
         ]),
         TypeOrmModule.forRoot({
             type: 'postgres',

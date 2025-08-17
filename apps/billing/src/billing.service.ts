@@ -23,6 +23,7 @@ export class BillingService {
     ) {}
 
     async createPaymentSession(
+        userId: string,
         appointmentPaymentSession: AppointmentPaymentSession,
     ) {
         const { currency, items } = appointmentPaymentSession;
@@ -58,6 +59,7 @@ export class BillingService {
 
         return this.stripe.checkout.sessions.create({
             metadata: {
+                userId,
                 appointment_ids: JSON.stringify(
                     items.map((i) => i.appointmentId),
                 ),
@@ -65,10 +67,28 @@ export class BillingService {
             line_items: lineItems,
             mode: 'payment',
             ui_mode: 'embedded',
-            // payment_method_types: ['card'],
             return_url: process.env.STRIPE_RETURN_URL || '',
             payment_method_configuration: process.env.STRIPE_PMC,
             payment_intent_data: {},
+        });
+    }
+
+    async checkAreAppointmentsPaid(appointmentIds: string[]) {
+        const payments = await this.paymentModel
+            .find({
+                'metadata.appointment_ids': { $in: appointmentIds },
+                payment_status: 'paid',
+            })
+            .lean();
+        return appointmentIds.map((id) => {
+            const payment = payments.find((p) =>
+                p.metadata.appointment_ids.includes(id),
+            );
+            return {
+                appointmentId: id,
+                isPaid: !!payment,
+                paymentId: payment ? payment._id : null,
+            };
         });
     }
 
@@ -142,11 +162,18 @@ export class BillingService {
         if (!meta) {
             return {};
         }
-        return Object.keys(meta).reduce((acc, key) => {
-            const value = meta[key];
-            acc[key] = JSON.parse(value);
-            return acc;
-        }, {});
+        return Object.keys(meta).reduce(
+            (acc, key) => {
+                const value = meta[key];
+                try {
+                    acc[key] = JSON.parse(value);
+                } catch {
+                    acc[key] = value;
+                }
+                return acc;
+            },
+            {} as Record<string, any>,
+        );
     }
 
     private extractLineItems(session: Stripe.Checkout.Session) {

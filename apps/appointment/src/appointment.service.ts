@@ -11,12 +11,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Appointment } from '@app/common-utils/db/postgres/schemas/appointment.entity';
 import { Repository } from 'typeorm';
 import { EAppointmentStatus } from '@app/common-utils/db/postgres/types/appointment';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class AppointmentService {
     constructor(
         @Inject(QUEUE_CLIENT_NAMES.NOTIFICATION_RMQ_CLIENT)
         private readonly notificationClient: ClientProxy,
+        @Inject(QUEUE_CLIENT_NAMES.BILLING_RMQ_CLIENT)
+        private readonly billingClient: ClientProxy,
         @InjectRepository(Appointment)
         private readonly appointmentRepository: Repository<Appointment>,
         private readonly commonUtilsService: CommonUtilsService,
@@ -82,20 +85,59 @@ export class AppointmentService {
                 relations: ['patient', 'doctor'],
             });
 
+        const paidAppointments = await lastValueFrom(
+            this.billingClient.send(
+                { cmd: 'check.appointments.paid' },
+                {
+                    appointmentIds: appointments.map(
+                        (appointment) => appointment.id,
+                    ),
+                },
+            ),
+        );
+
         return {
             total,
             page,
             limit,
-            data: appointments,
+            data: appointments.map((appointment) => {
+                const paymentInfo = paidAppointments.find(
+                    (p) => p.appointmentId === appointment.id,
+                );
+                return {
+                    ...appointment,
+                    isPaid: paymentInfo?.isPaid || false,
+                    paymentId: paymentInfo?.paymentId || null,
+                };
+            }),
             totalPages: Math.ceil(total / limit),
         };
     }
 
     async findOne(id: number) {
-        return this.appointmentRepository.findOne({
+        const appointment = await this.appointmentRepository.findOne({
             where: { id },
             relations: ['patient', 'doctor'],
         });
+        if (!appointment) {
+            return null;
+        }
+        const paidAppointments = await lastValueFrom(
+            this.billingClient.send(
+                { cmd: 'check.appointments.paid' },
+                {
+                    appointmentIds: [id],
+                },
+            ),
+        );
+        const paymentInfo = paidAppointments.find(
+            (p) => p.appointmentId === id,
+        );
+        return {
+            ...appointment,
+            isPaid: paymentInfo?.isPaid || false,
+            paymentId: paymentInfo?.paymentId || null,
+        };
     }
 
     async update(id: number, updateAppointmentDto: IUpdateAppointmentDto) {

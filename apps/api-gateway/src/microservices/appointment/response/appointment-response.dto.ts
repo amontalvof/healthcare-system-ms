@@ -57,6 +57,18 @@ export class AppointmentResponseDto {
     endTime: string;
 
     @ApiProperty({
+        description: 'Indicates if the appointment has been paid',
+    })
+    isPaid: boolean;
+
+    @ApiProperty({
+        description: 'The payment ID if the appointment has been paid',
+        example: null,
+        nullable: true,
+    })
+    paymentId: string | null;
+
+    @ApiProperty({
         description: 'The creation date of the appointment',
         example: '2025-03-10T19:21:33.220Z',
     })
