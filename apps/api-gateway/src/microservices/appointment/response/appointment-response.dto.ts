@@ -63,10 +63,15 @@ export class AppointmentResponseDto {
 
     @ApiProperty({
         description: 'The payment ID if the appointment has been paid',
-        example: null,
         nullable: true,
     })
     paymentId: string | null;
+
+    @ApiProperty({
+        description: 'The payment intent ID if the appointment has been paid',
+        nullable: true,
+    })
+    paymentIntentId: string | null;
 
     @ApiProperty({
         description: 'The creation date of the appointment',

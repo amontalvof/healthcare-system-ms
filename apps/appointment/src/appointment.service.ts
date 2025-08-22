@@ -108,6 +108,7 @@ export class AppointmentService {
                     ...appointment,
                     isPaid: paymentInfo?.isPaid || false,
                     paymentId: paymentInfo?.paymentId || null,
+                    paymentIntentId: paymentInfo?.paymentIntentId || null,
                 };
             }),
             totalPages: Math.ceil(total / limit),
@@ -137,6 +138,7 @@ export class AppointmentService {
             ...appointment,
             isPaid: paymentInfo?.isPaid || false,
             paymentId: paymentInfo?.paymentId || null,
+            paymentIntentId: paymentInfo?.paymentIntentId || null,
         };
     }
 

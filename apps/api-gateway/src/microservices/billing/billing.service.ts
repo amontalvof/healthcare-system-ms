@@ -6,6 +6,7 @@ import { lastValueFrom } from 'rxjs';
 import { AppointmentPaymentSessionDto } from './dtos/appointment-payment-session.dto';
 import stripe from 'stripe';
 import { IJwtUser } from '@app/common-utils/jwt/user';
+import { RefundPaymentDto } from './dtos/refund-payment.dto';
 
 @Injectable()
 export class BillingService {
@@ -29,6 +30,15 @@ export class BillingService {
         );
     }
 
+    refundPayment(user: IJwtUser, refundPaymentDto: RefundPaymentDto) {
+        return lastValueFrom(
+            this.billingClient.send(
+                { cmd: 'refund.payment' },
+                { userId: user.userId, refundPayment: refundPaymentDto },
+            ),
+        );
+    }
+
     async webhook(req: Request, res: Response) {
         const signature = req.headers['stripe-signature'] as string;
         // rawBody is available thanks to { rawBody: true } + bodyParser.raw()
@@ -45,19 +55,26 @@ export class BillingService {
             return res.status(400).send(`Webhook Error: ${message}`);
         }
         // Handle the event
-        const session = event.data.object as stripe.Checkout.Session;
         switch (event.type) {
             case 'checkout.session.completed': {
+                const session = event.data.object as stripe.Checkout.Session;
                 await lastValueFrom(
                     this.billingClient.send(
                         { cmd: 'checkout.session.completed' },
-                        {
-                            sessionId: session.id,
-                        },
+                        { sessionId: session.id },
                     ),
                 );
                 break;
             }
+            case 'refund.created':
+                const refund = event.data.object as stripe.Refund;
+                await lastValueFrom(
+                    this.billingClient.send(
+                        { cmd: 'refund.created' },
+                        { refundId: refund.id },
+                    ),
+                );
+                break;
             default:
                 break;
         }

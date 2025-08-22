@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { BillingService } from './billing.service';
 import { MessagePattern } from '@nestjs/microservices';
 import { AppointmentPaymentSession } from './types/appointmentPaymentSession';
+import { IRefundPayment } from './types/refundPayment';
 
 @Controller()
 export class BillingController {
@@ -23,7 +24,12 @@ export class BillingController {
 
     @MessagePattern({ cmd: 'checkout.session.completed' })
     async handleAsyncPaymentSucceeded(data: { sessionId: string }) {
-        return this.billingService.snapshotAndUpsertFromSession(data);
+        return this.billingService.upsertPaymentFromSession(data);
+    }
+
+    @MessagePattern({ cmd: 'refund.payment' })
+    refundPayment(data: { userId: string; refundPayment: IRefundPayment }) {
+        return this.billingService.refundPayment(data);
     }
 
     @MessagePattern({ cmd: 'check.appointments.paid' })
@@ -33,5 +39,10 @@ export class BillingController {
         appointmentIds: string[];
     }) {
         return this.billingService.checkAreAppointmentsPaid(appointmentIds);
+    }
+
+    @MessagePattern({ cmd: 'refund.created' })
+    async handleRefundCreated(data: { refundId: string }) {
+        return this.billingService.handleRefundCreated(data.refundId);
     }
 }

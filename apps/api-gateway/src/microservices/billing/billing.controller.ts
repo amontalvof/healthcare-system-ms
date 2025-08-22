@@ -7,6 +7,7 @@ import { RolesGuard } from '../../guards/roles.guard';
 import { ERole, IJwtUser } from '@app/common-utils/jwt/user';
 import { Roles } from '../../decorators/roles.decorator';
 import { User } from '../../decorators/user.decorator';
+import { RefundPaymentDto } from './dtos/refund-payment.dto';
 
 @Controller('billing')
 export class BillingController {
@@ -23,6 +24,17 @@ export class BillingController {
             user,
             appointmentPaymentSessionDto,
         );
+    }
+
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles(ERole.Admin, ERole.Doctor, ERole.Patient)
+    @Post('refund')
+    refund(
+        @User() user: IJwtUser,
+        @Body()
+        refundPaymentDto: RefundPaymentDto,
+    ) {
+        return this.billingService.refundPayment(user, refundPaymentDto);
     }
 
     @Post('stripe-webhook')

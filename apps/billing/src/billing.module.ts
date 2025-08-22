@@ -14,6 +14,10 @@ import {
     Payment,
     PaymentSchema,
 } from '@app/common-utils/db/mongo/schemas/payment.schema';
+import {
+    Refund,
+    RefundSchema,
+} from '@app/common-utils/db/mongo/schemas/refund.schema';
 
 @Module({
     imports: [
@@ -25,6 +29,7 @@ import {
         MongooseModule.forRoot(process.env.MONGO_DB_URI),
         MongooseModule.forFeature([
             { name: Payment.name, schema: PaymentSchema },
+            { name: Refund.name, schema: RefundSchema },
         ]),
         CommonUtilsModule,
         ClientsModule.registerAsync([

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import Stripe from 'stripe';
 import { AppointmentPaymentSession } from './types/appointmentPaymentSession';
 import dayjs from 'dayjs';
@@ -8,6 +8,8 @@ import timezone from 'dayjs/plugin/timezone';
 import { InjectModel } from '@nestjs/mongoose';
 import { Payment } from '@app/common-utils/db/mongo/schemas/payment.schema';
 import { Model } from 'mongoose';
+import { IRefundPayment } from './types/refundPayment';
+import { Refund } from '@app/common-utils/db/mongo/schemas/refund.schema';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -20,6 +22,8 @@ export class BillingService {
     constructor(
         @InjectModel(Payment.name)
         private readonly paymentModel: Model<Payment>,
+        @InjectModel(Refund.name)
+        private readonly refundModel: Model<Refund>,
     ) {}
 
     async createPaymentSession(
@@ -73,6 +77,33 @@ export class BillingService {
         });
     }
 
+    async refundPayment(data: {
+        userId: string;
+        refundPayment: IRefundPayment;
+    }) {
+        const userId = data.userId;
+        const {
+            paymentIntentId,
+            amount,
+            reason,
+            idempotencyKey,
+            appointmentId,
+        } = data.refundPayment;
+        const opts = idempotencyKey ? { idempotencyKey } : undefined;
+        return this.stripe.refunds.create(
+            {
+                payment_intent: paymentIntentId,
+                amount,
+                reason,
+                metadata: {
+                    userId,
+                    appointmentId,
+                },
+            },
+            opts,
+        );
+    }
+
     async checkAreAppointmentsPaid(appointmentIds: string[]) {
         const payments = await this.paymentModel
             .find({
@@ -88,11 +119,39 @@ export class BillingService {
                 appointmentId: id,
                 isPaid: !!payment,
                 paymentId: payment ? payment._id : null,
+                paymentIntentId: payment ? payment.payment_intent_id : null,
             };
         });
     }
 
-    async snapshotAndUpsertFromSession(data: { sessionId: string }) {
+    async handleRefundCreated(refundId: string) {
+        const refund = await this.stripe.refunds.retrieve(refundId, {
+            expand: ['charge', 'charge.payment_intent'],
+        });
+        return await this.refundModel
+            .updateOne(
+                { refund_id: refund.id },
+                {
+                    $set: {
+                        payment_intent_id: refund.payment_intent,
+                        charge_id: (refund.charge as Stripe.Charge).id,
+                        amount: refund.amount,
+                        currency: refund.currency,
+                        status: refund.status,
+                        reason: refund.reason,
+                        balance_transaction_id:
+                            (refund.balance_transaction as string) ?? null,
+                        created_at_unix: refund.created,
+                        metadata: this.parseMeta(refund.metadata),
+                    },
+                    $setOnInsert: { refund_id: refund.id },
+                },
+                { upsert: true, new: true },
+            )
+            .lean();
+    }
+
+    async upsertPaymentFromSession(data: { sessionId: string }) {
         const session = await this.stripe.checkout.sessions.retrieve(
             data.sessionId,
             {
@@ -168,7 +227,8 @@ export class BillingService {
                 try {
                     acc[key] = JSON.parse(value);
                 } catch {
-                    acc[key] = value;
+                    const num = Number(value);
+                    acc[key] = isNaN(num) ? value : num;
                 }
                 return acc;
             },
