@@ -54,6 +54,7 @@ export class AuthService {
         this.notificationClient.emit('send.verification.code', {
             code,
             email,
+            name: fullName,
         });
         return user.save();
     }

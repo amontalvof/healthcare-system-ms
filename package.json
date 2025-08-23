@@ -39,6 +39,7 @@
         "db:log": "npm run typeorm -- schema:log"
     },
     "dependencies": {
+        "@getbrevo/brevo": "^3.0.1",
         "@keyv/redis": "^4.3.1",
         "@nestjs/cache-manager": "^3.0.0",
         "@nestjs/common": "^11.0.0",
@@ -53,7 +54,6 @@
         "@nestjs/swagger": "^11.0.6",
         "@nestjs/throttler": "^6.4.0",
         "@nestjs/typeorm": "^11.0.0",
-        "@sendgrid/mail": "^8.1.4",
         "amqp-connection-manager": "^4.1.14",
         "amqplib": "^0.10.5",
         "axios": "^1.10.0",

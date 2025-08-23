@@ -49,7 +49,7 @@ export class AppointmentService {
             // Step 2: Query the appointment with joined relations
             const result = await this.appointmentRepository.findOne({
                 where: { id: newAppointmentId },
-                relations: ['patient', 'doctor'],
+                relations: ['patient', 'doctor', 'doctor.hospitalAddress'],
             });
 
             this.notificationClient.emit('send.appointment.scheduled', {
@@ -58,7 +58,7 @@ export class AppointmentService {
                 date: result.date,
                 doctor: result.doctor.fullName,
                 hospital: result.doctor.hospital,
-                address: result.doctor.hospitalAddress,
+                address: `${result.doctor.hospitalAddress.street}, ${result.doctor.hospitalAddress.city}, ${result.doctor.hospitalAddress.state}, ${result.doctor.hospitalAddress.postalCode}`,
                 countryCode: result.doctor.countryCode,
                 phone: result.doctor.phone,
             });

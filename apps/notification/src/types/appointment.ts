@@ -3,7 +3,7 @@ export interface IAppointment {
     name: string;
     date: Date;
     doctor: string;
-    clinic: string;
+    hospital: string;
     address: string;
     countryCode: string;
     phone: string;

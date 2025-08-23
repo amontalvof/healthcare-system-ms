@@ -92,8 +92,8 @@ export const APPOINTMENT_SCHEDULED_TEMPLATE = `
                         <td>{{doctor}}</td>
                     </tr>
                     <tr>
-                        <th>Clinic</th>
-                        <td>{{clinic}}</td>
+                        <th>Hospital</th>
+                        <td>{{hospital}}</td>
                     </tr>
                     <tr>
                         <th>Address</th>
