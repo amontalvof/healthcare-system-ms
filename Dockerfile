@@ -1,20 +1,18 @@
 # Use an official Node.js runtime as a parent image
 FROM node:20-alpine
 
-# Set workdir & env
+# Set the working directory
 WORKDIR /usr/src/app
-ENV NODE_ENV=production
 
-# Install deps
+# Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy source and build
+# Copy the rest of your monorepo into the container
 COPY . .
-RUN npm run build
 
-# Expose the web port (Heroku will supply $PORT)
+# Expose the ports that your apps use
 EXPOSE 3000
 
-# Start all services (gateway must bind 0.0.0.0:$PORT)
-CMD ["npm", "run", "start:prod:all"]
+# Start all services in development mode
+CMD ["npm", "run", "start:debug:all"]
