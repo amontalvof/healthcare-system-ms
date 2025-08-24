@@ -11,7 +11,7 @@ async function bootstrap() {
     app.setGlobalPrefix('api');
 
     app.enableCors({
-        origin: process.env.CORS_ORIGIN,
+        origin: process.env.CORS_ORIGIN?.split(',') ?? '*',
         methods: process.env.CORS_METHODS,
         credentials: true,
     });
@@ -37,17 +37,20 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup('api-docs', app, document);
 
-    const PORT = process.env.PORT;
-    await app.listen(PORT);
-    const host = process.env.HOST || 'localhost';
-    const protocol = host === 'localhost' ? 'http' : 'https';
+    const PORT = Number(process.env.PORT ?? 3000);
+    await app.listen(PORT, '0.0.0.0');
+    // Log a friendly URL (Heroku sets APP_NAME in dyno metadata only if enabled, so use HEROKU_APP_NAME fallback)
+    const appUrl =
+        process.env.APP_BASE_URL || // set this in Heroku config if you want (e.g., https://healtcare-ms-backend-...herokuapp.com)
+        `http://localhost:${PORT}`;
+
     commonUtils.colorLogger({
         type: 'log',
-        message: `Swagger is running on ${protocol}://${host}:${PORT}/api-docs`,
+        message: `API listening on ${appUrl}`,
     });
     commonUtils.colorLogger({
         type: 'log',
-        message: `ApiGateway is running on port: ${PORT}`,
+        message: `Swagger at ${appUrl}/api-docs`,
     });
 }
 bootstrap();
