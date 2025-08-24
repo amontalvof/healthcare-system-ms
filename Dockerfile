@@ -7,7 +7,7 @@ ENV NODE_ENV=production
 
 # Install deps
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Copy source and build
 COPY . .
