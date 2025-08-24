@@ -15,7 +15,7 @@ RUN if [ -f package-lock.json ]; then npm ci --include=dev; else npm install; fi
 # Copy the rest and build ONLY the selected app (adjust if your Nest CLI needs a specific script)
 COPY . .
 # Option 1: if your nest CLI supports "npm run build -- <app>"
-RUN npm run build -- ${SERVICE}
+RUN npx nest build ${SERVICE}
 # Option 2 (if Option 1 doesn't work):
 # RUN npm run build:${SERVICE}
 
