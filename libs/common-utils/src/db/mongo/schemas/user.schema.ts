@@ -5,7 +5,7 @@ import { EUserRole, IUser } from '../types/user';
 
 @Schema({
     toJSON: {
-        transform: function (_doc, ret) {
+        transform: function (_doc: any, ret: any) {
             delete ret.password;
             delete ret.verificationCode;
             delete ret.verificationCodeExpires;

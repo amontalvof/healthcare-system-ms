@@ -129,7 +129,7 @@ export class BillingService {
             expand: ['charge', 'charge.payment_intent'],
         });
         return await this.refundModel
-            .updateOne(
+            .findOneAndUpdate(
                 { refund_id: refund.id },
                 {
                     $set: {
@@ -209,7 +209,7 @@ export class BillingService {
         };
 
         return await this.paymentModel
-            .updateOne(
+            .findOneAndUpdate(
                 { session_id: session.id },
                 { $set: paymentData, $setOnInsert: { session_id: session.id } },
                 { upsert: true, new: true },

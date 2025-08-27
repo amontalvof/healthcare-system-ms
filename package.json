@@ -10,8 +10,16 @@
         "npm": ">=10 <11"
     },
     "scripts": {
+        "build:api-gateway": "nest build api-gateway",
+        "build:appointment": "nest build appointment",
+        "build:auth": "nest build auth",
+        "build:billing": "nest build billing",
+        "build:doctor": "nest build doctor",
+        "build:notification": "nest build notification",
+        "build:patient": "nest build patient",
+        "build:all": "npm run build:api-gateway && npm run build:appointment && npm run build:auth && npm run build:billing && npm run build:doctor && npm run build:notification && npm run build:patient",
         "build": "nest build",
-        "heroku-postbuild": "npm run build",
+        "heroku-postbuild": "npm run build:all",
         "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
         "start": "nest start",
         "start:dev": "nest start --watch",
