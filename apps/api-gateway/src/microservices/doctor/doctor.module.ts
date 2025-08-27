@@ -23,7 +23,7 @@ import { JwtAuthGuard } from '../../guards/jwt-auth.guard';
                 useFactory: (configService: ConfigService) => ({
                     transport: Transport.RMQ,
                     options: {
-                        urls: [configService.get<string>('RMQ_URL')],
+                        urls: [configService.get<string>('CLOUDAMQP_URL')],
                         queue: QUEUE_NAMES.DOCTOR_QUEUE,
                         queueOptions: { durable: true, autoDelete: false },
                     },

@@ -40,7 +40,7 @@ import {
                 useFactory: (configService: ConfigService) => ({
                     transport: Transport.RMQ,
                     options: {
-                        urls: [configService.get<string>('RMQ_URL')],
+                        urls: [configService.get<string>('CLOUDAMQP_URL')],
                         queue: QUEUE_NAMES.NOTIFICATION_QUEUE,
                         queueOptions: { durable: true, autoDelete: false },
                     },

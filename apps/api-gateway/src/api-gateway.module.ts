@@ -33,7 +33,7 @@ import { SeedModule } from './seed/seed.module';
         CacheModule.registerAsync({
             isGlobal: true,
             useFactory: async () => ({
-                stores: [createKeyv(process.env.REDIS_URL)],
+                stores: [createKeyv(process.env.REDISCLOUD_URL)],
                 ttl: 60000,
             }),
         }),

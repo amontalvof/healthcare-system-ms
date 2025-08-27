@@ -18,7 +18,7 @@ import {
                     return {
                         transport: Transport.RMQ,
                         options: {
-                            urls: [configService.get<string>('RMQ_URL')],
+                            urls: [configService.get<string>('CLOUDAMQP_URL')],
                             queue: QUEUE_NAMES.AUTH_QUEUE,
                             queueOptions: { durable: true, autoDelete: false },
                         },

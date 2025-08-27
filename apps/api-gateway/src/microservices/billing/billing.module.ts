@@ -22,7 +22,7 @@ import { JwtStrategy } from '@app/common-utils/jwt/jwt.strategy';
                 useFactory: (configService: ConfigService) => ({
                     transport: Transport.RMQ,
                     options: {
-                        urls: [configService.get<string>('RMQ_URL')],
+                        urls: [configService.get<string>('CLOUDAMQP_URL')],
                         queue: QUEUE_NAMES.BILLING_QUEUE,
                         queueOptions: { durable: true, autoDelete: false },
                     },
