@@ -56,6 +56,10 @@ import { entities } from '@app/common-utils/db/postgres/schemas';
             database: process.env.POSTGRES_DB,
             synchronize: process.env.NODE_ENV !== 'production',
             entities,
+            ssl:
+                process.env.NODE_ENV === 'production'
+                    ? { rejectUnauthorized: false } // common for managed PG (Neon/Heroku)
+                    : false,
         }),
         TypeOrmModule.forFeature(entities),
         CommonUtilsModule,
