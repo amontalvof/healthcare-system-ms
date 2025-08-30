@@ -19,7 +19,6 @@
         "build:patient": "nest build patient",
         "build:all": "npm run build:api-gateway && npm run build:appointment && npm run build:auth && npm run build:billing && npm run build:doctor && npm run build:notification && npm run build:patient",
         "build": "nest build",
-        "heroku-postbuild": "npm run build:all",
         "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
         "start": "nest start",
         "start:dev": "nest start --watch",
